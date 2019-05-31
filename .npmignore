@@ -1,0 +1,15 @@
+logs
+*.log
+pids
+*.pid
+*.seed
+.tmp
+.grunt
+node_modules
+libcov
+coverage
+.nyc_output
+test
+examples
+.travis.yml
+Gruntfile.js

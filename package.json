@@ -1,0 +1,135 @@
+{
+  "name": "@lykmapipo/file",
+  "version": "0.1.0",
+  "description": "Store and serve file content i.e photos, videos etc on top of GridFS",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "scripts": {
+    "clean": "rimraf lib dist es umd logs",
+    "prebuild": "npm test && npm run clean",
+    "build": "rollup -c",
+    "lint": "eslint --fix --ext .js src/ test/ examples/ rollup.config.js",
+    "pretest": "npm run lint",
+    "test": "NODE_ENV=test mocha --require @babel/register test/**/*.spec.js",
+    "test:unit": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/unit/**/*.spec.js",
+    "test:integration": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/integration/**/*.spec.js",
+    "docs": "doxdox 'lib/**/*.js' -p package.json -l markdown -o DOCUMENTATION.md",
+    "cmt": "git add -A && git-cz",
+    "changelog": "changelog",
+    "chore:deps": "ncu -u && npm install --save",
+    "dev": "npm run seed && npm run start",
+    "start": "BASE_PATH=./examples node ./examples/app.js",
+    "seed": "BASE_PATH=./examples node ./examples/seed.js"
+  },
+  "keywords": [
+    "lykmapipo",
+    "mongoose",
+    "mongoose-module",
+    "mongodb",
+    "gridfs",
+    "fs",
+    "stream",
+    "filesystem",
+    "file",
+    "storage",
+    "bucket",
+    "upload",
+    "download",
+    "chuck"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lykmapipo/file.git"
+  },
+  "author": {
+    "name": "lykmapipo",
+    "email": "lallyelias87@gmail.com",
+    "url": "https://github.com/lykmapipo"
+  },
+  "contributors": [
+    {
+      "name": "lykmapipo",
+      "email": "lallyelias87@gmail.com",
+      "url": "https://github.com/lykmapipo"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lykmapipo/file/issues",
+    "email": "lallyelias87@gmail.com"
+  },
+  "homepage": "https://github.com/lykmapipo/file",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "@commitlint/travis-cli": "^8.0.0",
+    "chai": "^4.2.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "doxdox": "^3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-mocha": "^5.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "generate-changelog": "^1.7.1",
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "mocha": "^6.1.4",
+    "npm-check-updates": "^3.1.9",
+    "prettier": "^1.17.1",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.13.0",
+    "@benmaruchu/faker": "^4.2.1",
+    "@codetanzania/majifix-common": "^0.12.4",
+    "@lykmapipo/express-test-helpers": "^0.7.2",
+    "@lykmapipo/mongoose-test-helpers": "^0.7.4",
+    "mongoose": ">=5.5.12"
+  },
+  "peerDependencies": {
+    "mongoose": ">=5.5.12"
+  },
+  "dependencies": {
+    "@lykmapipo/common": ">=0.19.0",
+    "@lykmapipo/env": ">=0.7.8",
+    "@lykmapipo/express-rest-actions": ">=0.6.0",
+    "@lykmapipo/mongoose-common": ">=0.23.4",
+    "async": ">=3.0.1",
+    "lodash": ">=4.17.11",
+    "mongoose-geojson-schemas": ">=0.10.5",
+    "mongoose-gridfs": ">=1.0.5",
+    "mongoose-rest-actions": ">=0.28.1"
+  },
+  "engines": {
+    "node": ">=8.11.1",
+    "npm": ">=5.6.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "npm run lint",
+      "git add -A"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
