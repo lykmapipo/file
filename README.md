@@ -4,7 +4,7 @@
 [![Dependencies Status](https://david-dm.org/lykmapipo/file/status.svg?style=flat-square)](https://david-dm.org/lykmapipo/file)
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/lykmapipo/file/tree/master)
 
-Store and serve file content i.e photos, videos etc. on top of GridFS.
+Store and serve file content i.e photos, videos etc. on top of [MongoDB GridFS](https://docs.mongodb.com/manual/core/gridfs/).
 
 ## Requirements
 
