@@ -65,21 +65,13 @@ export const Buckets = {
  *
  * import { FileTypes } from '@lykmapipo/file';
  *
- * const Profile = new Schema({
- *   avatar: FileTypes.Image
- * });
+ * const Profile = new Schema({ avatar: FileTypes.Image });
  *
- * const Song = new Schema({
- *   stream: FileTypes.Audio
- * });
+ * const Song = new Schema({ stream: FileTypes.Audio });
  *
- * const Movie = new Schema({
- *   stream: FileTypes.Video
- * });
+ * const Movie = new Schema({ stream: FileTypes.Video });
  *
- * const Invoice = new Schema({
- *   document: FileTypes.Document
- * });
+ * const Invoice = new Schema({ document: FileTypes.Document });
  *
  */
 export const FileTypes = {
