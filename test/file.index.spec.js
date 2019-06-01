@@ -1,13 +1,6 @@
-import { join as joinPath } from 'path';
-import { createReadStream } from 'fs';
-import { getType as mimeTypeOf } from 'mime';
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
 import { Buckets, FileTypes, createModels } from '../src/file.model';
-
-const readStreamFor = filename => {
-  return createReadStream(joinPath(__dirname, 'fixtures', filename));
-};
 
 describe('Index', () => {
   it('should expose bucket definitions', () => {

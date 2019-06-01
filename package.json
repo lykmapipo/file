@@ -35,7 +35,7 @@
     "bucket",
     "upload",
     "download",
-    "chuck"
+    "chunk"
   ],
   "repository": {
     "type": "git",
