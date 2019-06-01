@@ -1,4 +1,4 @@
-# file
+# file(WIP)
 
 [![Build Status](https://travis-ci.org/lykmapipo/file.svg?branch=master)](https://travis-ci.org/lykmapipo/file)
 [![Dependencies Status](https://david-dm.org/lykmapipo/file/status.svg?style=flat-square)](https://david-dm.org/lykmapipo/file)
@@ -38,7 +38,7 @@ start(error => { ... });
 
 ## Environment
 ```js
-FILE_BUCKETS=File,Photo,Image,Video
+FILE_BUCKETS=File,Image,Audio,Video
 ```
 
 ## Testing
