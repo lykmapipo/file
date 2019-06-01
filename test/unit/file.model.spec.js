@@ -5,11 +5,33 @@ import { Buckets, FileTypes } from '../../src/file.model';
 describe('File', () => {
   it('should expose bucket definitions', () => {
     expect(Buckets).to.exist;
+
     expect(Buckets.File).to.exist;
+    expect(Buckets.File).to.be.eql({ modelName: 'File', bucketName: 'fs' });
+
     expect(Buckets.Image).to.exist;
+    expect(Buckets.Image).to.be.eql({
+      modelName: 'Image',
+      bucketName: 'images',
+    });
+
     expect(Buckets.Audio).to.exist;
+    expect(Buckets.Audio).to.be.eql({
+      modelName: 'Audio',
+      bucketName: 'audios',
+    });
+
     expect(Buckets.Video).to.exist;
+    expect(Buckets.Video).to.be.eql({
+      modelName: 'Video',
+      bucketName: 'videos',
+    });
+
     expect(Buckets.Document).to.exist;
+    expect(Buckets.Document).to.be.eql({
+      modelName: 'Document',
+      bucketName: 'documents',
+    });
   });
 
   it('should expose file schematype definitions', () => {
