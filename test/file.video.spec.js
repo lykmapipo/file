@@ -10,18 +10,18 @@ const readStreamFor = filename => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
-describe('Document', () => {
-  let doc;
+describe('Video', () => {
+  let video;
 
-  it('should write document to the bucket', done => {
-    const filename = 'document.doc';
-    const contentType = mimeTypeOf('.doc');
+  it('should write video to the bucket', done => {
+    const filename = 'video.mp4';
+    const contentType = mimeTypeOf('.mp4');
     const options = { filename, contentType };
     const readStream = readStreamFor(filename);
 
-    const { Document } = createModels();
+    const { Video } = createModels();
 
-    Document.write(options, readStream, (error, created) => {
+    Video.write(options, readStream, (error, created) => {
       expect(error).to.not.exist;
       expect(created).to.exist;
       expect(created._id).to.exist;
@@ -31,16 +31,16 @@ describe('Document', () => {
       expect(created.chunkSize).to.exist;
       expect(created.uploadDate).to.exist;
       expect(created.md5).to.exist;
-      doc = created;
+      video = created;
       done(error, created);
     });
   });
 
   it('should return `Buffer` when read with callback', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+    const { Video } = createModels();
+    const options = { _id: video._id };
 
-    Document.read(options, (error, content) => {
+    Video.read(options, (error, content) => {
       expect(error).to.not.exist;
       expect(content).to.exist;
       expect(isBuffer(content)).to.be.true;
@@ -49,28 +49,28 @@ describe('Document', () => {
   });
 
   it('should return readable stream when read with no callback', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+    const { Video } = createModels();
+    const options = { _id: video._id };
 
-    const stream = Document.read(options);
+    const stream = Video.read(options);
     expect(isReadableStream(stream)).to.be.true;
     done();
   });
 
-  it('should unlink document from the bucket', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+  it('should unlink video from the bucket', done => {
+    const { Video } = createModels();
+    const options = { _id: video._id };
 
-    Document.unlink(options, (error, unlinked) => {
+    Video.unlink(options, (error, unlinked) => {
       expect(error).to.not.exist;
       expect(unlinked).to.exist;
-      expect(unlinked._id).to.exist.and.be.eql(doc._id);
-      expect(unlinked.filename).to.exist.and.be.eql(doc.filename);
-      expect(unlinked.contentType).to.exist.and.be.eql(doc.contentType);
-      expect(unlinked.length).to.exist.and.be.eql(doc.length);
-      expect(unlinked.chunkSize).to.exist.and.be.eql(doc.chunkSize);
-      expect(unlinked.uploadDate).to.exist.and.be.eql(doc.uploadDate);
-      expect(unlinked.md5).to.exist.and.be.eql(doc.md5);
+      expect(unlinked._id).to.exist.and.be.eql(video._id);
+      expect(unlinked.filename).to.exist.and.be.eql(video.filename);
+      expect(unlinked.contentType).to.exist.and.be.eql(video.contentType);
+      expect(unlinked.length).to.exist.and.be.eql(video.length);
+      expect(unlinked.chunkSize).to.exist.and.be.eql(video.chunkSize);
+      expect(unlinked.uploadDate).to.exist.and.be.eql(video.uploadDate);
+      expect(unlinked.md5).to.exist.and.be.eql(video.md5);
       done(error, unlinked);
     });
   });

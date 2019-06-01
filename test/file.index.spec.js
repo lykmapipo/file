@@ -9,7 +9,7 @@ const readStreamFor = filename => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
-describe('File', () => {
+describe('Index', () => {
   it('should expose bucket definitions', () => {
     expect(Buckets).to.exist;
 
