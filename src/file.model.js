@@ -19,7 +19,7 @@
  *
  */
 import { ObjectId } from '@lykmapipo/mongoose-common';
-// import { createModel } from 'mongoose-gridfs';
+import { createModel } from 'mongoose-gridfs';
 
 /**
  * @constant Buckets
@@ -66,11 +66,8 @@ export const Buckets = {
  * import { FileTypes } from '@lykmapipo/file';
  *
  * const Profile = new Schema({ avatar: FileTypes.Image });
- *
  * const Song = new Schema({ stream: FileTypes.Audio });
- *
  * const Movie = new Schema({ stream: FileTypes.Video });
- *
  * const Invoice = new Schema({ document: FileTypes.Document });
  *
  */
@@ -83,10 +80,15 @@ export const FileTypes = {
 };
 
 /**
- * @function File
- * @name File
- * @description Generic file model
- * @return {Model} valid mongoose model
+ * @function createModels
+ * @name createModels
+ * @description Create common file models
+ * @return {Object} Models valid mongoose models
+ * @return {Model} Models.File valid File mongoose model
+ * @return {Model} Models.Image valid Image mongoose model
+ * @return {Model} Models.Audio valid Audio mongoose model
+ * @return {Model} Models.Video valid Video mongoose model
+ * @return {Model} Models.Document valid Document mongoose model
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -95,7 +97,9 @@ export const FileTypes = {
  * @public
  * @example
  *
- * import { File } from '@lykmapipo/file';
+ * import { createModels } from '@lykmapipo/file';
+ *
+ * const { File, Image, Audio, Video, Document } = createModels();
  *
  * File.write({ filename }, stream, (error, file) => { ... });
  * File.read({ _id }, (error, file) => { ... });
@@ -103,4 +107,14 @@ export const FileTypes = {
  * File.find((error, files) => { ... });
  *
  */
-// export const File = createModel(Buckets.File);
+export const createModels = () => {
+  // create common file models
+  const File = createModel(Buckets.File);
+  const Image = createModel(Buckets.Image);
+  const Audio = createModel(Buckets.Audio);
+  const Video = createModel(Buckets.Video);
+  const Document = createModel(Buckets.Document);
+
+  // return file models
+  return { File, Image, Audio, Video, Document };
+};
