@@ -10,18 +10,18 @@ const readStreamFor = filename => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
-describe('Document', () => {
-  let doc;
+describe.only('File', () => {
+  let file;
 
-  it('should write document to the bucket', done => {
-    const filename = 'document.doc';
-    const contentType = mimeTypeOf('.doc');
+  it('should write file to the bucket', done => {
+    const filename = 'file.txt';
+    const contentType = mimeTypeOf('.txt');
     const options = { filename, contentType };
     const readStream = readStreamFor(filename);
 
-    const { Document } = createModels();
+    const { File } = createModels();
 
-    Document.write(options, readStream, (error, created) => {
+    File.write(options, readStream, (error, created) => {
       expect(error).to.not.exist;
       expect(created).to.exist;
       expect(created._id).to.exist;
@@ -31,16 +31,16 @@ describe('Document', () => {
       expect(created.chunkSize).to.exist;
       expect(created.uploadDate).to.exist;
       expect(created.md5).to.exist;
-      doc = created;
+      file = created;
       done(error, created);
     });
   });
 
   it('should return `Buffer` when read with callback', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+    const { File } = createModels();
+    const options = { _id: file._id };
 
-    Document.read(options, (error, content) => {
+    File.read(options, (error, content) => {
       expect(error).to.not.exist;
       expect(content).to.exist;
       expect(isBuffer(content)).to.be.true;
@@ -49,28 +49,28 @@ describe('Document', () => {
   });
 
   it('should return readable stream when read with no callback', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+    const { File } = createModels();
+    const options = { _id: file._id };
 
-    const stream = Document.read(options);
+    const stream = File.read(options);
     expect(isReadableStream(stream)).to.be.true;
     done();
   });
 
-  it('should unlink document from the bucket', done => {
-    const { Document } = createModels();
-    const options = { _id: doc._id };
+  it('should unlink file from the bucket', done => {
+    const { File } = createModels();
+    const options = { _id: file._id };
 
-    Document.unlink(options, (error, unlinked) => {
+    File.unlink(options, (error, unlinked) => {
       expect(error).to.not.exist;
       expect(unlinked).to.exist;
-      expect(unlinked._id).to.exist.and.be.eql(doc._id);
-      expect(unlinked.filename).to.exist.and.be.eql(doc.filename);
-      expect(unlinked.contentType).to.exist.and.be.eql(doc.contentType);
-      expect(unlinked.length).to.exist.and.be.eql(doc.length);
-      expect(unlinked.chunkSize).to.exist.and.be.eql(doc.chunkSize);
-      expect(unlinked.uploadDate).to.exist.and.be.eql(doc.uploadDate);
-      expect(unlinked.md5).to.exist.and.be.eql(doc.md5);
+      expect(unlinked._id).to.exist.and.be.eql(file._id);
+      expect(unlinked.filename).to.exist.and.be.eql(file.filename);
+      expect(unlinked.contentType).to.exist.and.be.eql(file.contentType);
+      expect(unlinked.length).to.exist.and.be.eql(file.length);
+      expect(unlinked.chunkSize).to.exist.and.be.eql(file.chunkSize);
+      expect(unlinked.uploadDate).to.exist.and.be.eql(file.uploadDate);
+      expect(unlinked.md5).to.exist.and.be.eql(file.md5);
       done(error, unlinked);
     });
   });

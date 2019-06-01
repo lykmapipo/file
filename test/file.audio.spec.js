@@ -10,7 +10,7 @@ const readStreamFor = filename => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
-describe.only('Audio', () => {
+describe('Audio', () => {
   let audio;
 
   it('should write audio to the bucket', done => {
