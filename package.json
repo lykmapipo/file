@@ -46,11 +46,13 @@
     "email": "lallyelias87@gmail.com",
     "url": "https://github.com/lykmapipo"
   },
-  "contributors": [{
-    "name": "lykmapipo",
-    "email": "lallyelias87@gmail.com",
-    "url": "https://github.com/lykmapipo"
-  }],
+  "contributors": [
+    {
+      "name": "lykmapipo",
+      "email": "lallyelias87@gmail.com",
+      "url": "https://github.com/lykmapipo"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lykmapipo/file/issues",
@@ -63,9 +65,13 @@
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
+    "@benmaruchu/faker": "^4.2.1",
+    "@codetanzania/majifix-common": "^0.12.4",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
+    "@lykmapipo/express-test-helpers": "^0.7.2",
+    "@lykmapipo/mongoose-test-helpers": "^0.7.4",
     "chai": "^4.2.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
@@ -78,17 +84,14 @@
     "eslint-plugin-prettier": "^3.1.0",
     "generate-changelog": "^1.7.1",
     "husky": "^2.3.0",
+    "is-stream": "^2.0.0",
     "lint-staged": "^8.1.7",
     "mocha": "^6.1.4",
+    "mongoose": ">=5.5.12",
     "npm-check-updates": "^3.1.9",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
-    "rollup": "^1.13.0",
-    "@benmaruchu/faker": "^4.2.1",
-    "@codetanzania/majifix-common": "^0.12.4",
-    "@lykmapipo/express-test-helpers": "^0.7.2",
-    "@lykmapipo/mongoose-test-helpers": "^0.7.4",
-    "mongoose": ">=5.5.12"
+    "rollup": "^1.13.0"
   },
   "peerDependencies": {
     "mongoose": ">=5.5.12"
