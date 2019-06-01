@@ -1,8 +1,8 @@
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
-import { Buckets, FileTypes } from '../src/file.model';
+import { Buckets, FileTypes, createModels } from '../src/file.model';
 
-describe('File', () => {
+describe('Common', () => {
   it('should expose bucket definitions', () => {
     expect(Buckets).to.exist;
 
@@ -62,10 +62,33 @@ describe('File', () => {
     expect(FileTypes.Document.type.name).to.be.equal(ObjectId.name);
     expect(FileTypes.Document.ref).to.be.equal('Document');
   });
+
+  it('should be able to create models', () => {
+    const { File, Image, Audio, Video, Document } = createModels();
+
+    expect(File).to.exist;
+    expect(File.schema).to.exist;
+    expect(File.modelName).to.be.equal('File');
+    expect(File.collection.name).to.be.equal('fs.files');
+
+    expect(Image).to.exist;
+    expect(Image.schema).to.exist;
+    expect(Image.modelName).to.be.equal('Image');
+    expect(Image.collection.name).to.be.equal('images.files');
+
+    expect(Audio).to.exist;
+    expect(Audio.schema).to.exist;
+    expect(Audio.modelName).to.be.equal('Audio');
+    expect(Audio.collection.name).to.be.equal('audios.files');
+
+    expect(Video).to.exist;
+    expect(Video.schema).to.exist;
+    expect(Video.modelName).to.be.equal('Video');
+    expect(Video.collection.name).to.be.equal('videos.files');
+
+    expect(Document).to.exist;
+    expect(Document.schema).to.exist;
+    expect(Document.modelName).to.be.equal('Document');
+    expect(Document.collection.name).to.be.equal('documents.files');
+  });
 });
-
-describe('File Instance', () => {});
-
-describe('File Validations', () => {});
-
-describe('File Statics', () => {});
