@@ -8,7 +8,7 @@
     "clean": "rimraf lib dist es umd logs",
     "prebuild": "npm test && npm run clean",
     "build": "rollup -c",
-    "lint": "eslint --fix --ext .js src/ test/ examples/ rollup.config.js",
+    "lint": "eslint --fix --ext .js src/ test/ rollup.config.js",
     "pretest": "npm run lint",
     "test": "NODE_ENV=test mocha --require @babel/register test/**/*.spec.js",
     "test:unit": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/unit/**/*.spec.js",
@@ -98,12 +98,13 @@
   "dependencies": {
     "@lykmapipo/common": ">=0.19.0",
     "@lykmapipo/env": ">=0.7.8",
+    "@lykmapipo/express-common": ">=0.17.3",
     "@lykmapipo/express-rest-actions": ">=0.6.0",
     "@lykmapipo/mongoose-common": ">=0.23.4",
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
     "mongoose-geojson-schemas": ">=0.10.5",
-    "mongoose-gridfs": ">=1.0.5",
+    "mongoose-gridfs": ">=1.0.6",
     "mongoose-rest-actions": ">=0.28.1"
   },
   "engines": {

@@ -1,8 +1,8 @@
 /**
  * @module File
  * @name File
- * @description A representation of stored and retrieved information
- * that does not qualify to belongs to their own domain model.
+ * @description A representation of stored and served file content i.e photos,
+ * videos etc. on top of MongoDB GridFS.
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @licence MIT
