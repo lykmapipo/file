@@ -1,6 +1,6 @@
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
-import { Buckets, FileTypes } from '../../src/file.model';
+import { Buckets, FileTypes } from '../src/file.model';
 
 describe('File', () => {
   it('should expose bucket definitions', () => {
