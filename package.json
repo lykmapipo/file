@@ -10,7 +10,7 @@
     "build": "rollup -c",
     "lint": "eslint --fix --ext .js src/ test/ rollup.config.js",
     "pretest": "npm run lint",
-    "test": "NODE_ENV=test mocha --require @babel/register test/**/*.spec.js",
+    "test": "NODE_ENV=test mocha --timeout 8000 --require @babel/register test/**/*.spec.js",
     "test:unit": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/unit/**/*.spec.js",
     "test:integration": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/integration/**/*.spec.js",
     "docs": "doxdox 'lib/**/*.js' -p package.json -l markdown -o DOCUMENTATION.md",
@@ -46,13 +46,11 @@
     "email": "lallyelias87@gmail.com",
     "url": "https://github.com/lykmapipo"
   },
-  "contributors": [
-    {
-      "name": "lykmapipo",
-      "email": "lallyelias87@gmail.com",
-      "url": "https://github.com/lykmapipo"
-    }
-  ],
+  "contributors": [{
+    "name": "lykmapipo",
+    "email": "lallyelias87@gmail.com",
+    "url": "https://github.com/lykmapipo"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lykmapipo/file/issues",
@@ -103,6 +101,7 @@
     "@lykmapipo/mongoose-common": ">=0.23.4",
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
+    "mime": ">=2.4.3",
     "mongoose-geojson-schemas": ">=0.10.5",
     "mongoose-gridfs": ">=1.0.6",
     "mongoose-rest-actions": ">=0.28.1"
