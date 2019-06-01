@@ -13,55 +13,31 @@
 
 /**
  * @apiDefine File
- * @apiSuccess {String} _id Unique file identifier
- * @apiSuccess {String} name Human readable value of a file.
- * @apiSuccess {String} [code] Human(and machine) readable, unique identifier
- * of a prefined.
- * @apiSuccess {String} [symbol] A mark or sign that representing a prefined.
- * @apiSuccess {String} [abbreviation] Human readable short form of a
- * file value.
- * @apiSuccess {String} [description] A brief summary about a file if
- * available i.e additional details that clarify what a file is for.
- * @apiSuccess {Number} [weight=0] Weight of the file to help in ordering
- * files of a given namespace.
- * @apiSuccess {String} [color] A color in hexadecimal format used to
- * differentiate filed value visually from one other.
- * @apiSuccess {String} [icon] An icon in url or base64 format used to
- * differentiate files visually.
- * @apiSuccess {Geometry} [geometry] A geo-geometry representation of a
- * filed.
- * @apiSuccess {Map} [properties] A map of key value pairs to allow to associate
- * other meaningful information to a filed.
- * @apiSuccess {Date} [createdAt] Date when file was created
- * @apiSuccess {Date} [updatedAt] Date when file was last updated
+ * @apiSuccess {String} _id Unique file identifier.
+ * @apiSuccess {Number} length The size of file in bytes.
+ * @apiSuccess {Number} chuckSize The size of each file chunk in bytes.
+ * @apiSuccess {Date} uploadDate The date the file was first stored.
+ * @apiSuccess {String} md5 md5 file digest.
+ * @apiSuccess {String} filename A human-readable file name.
+ * @apiSuccess {String} contentType A valid MIME type for the file.
+ * @apiSuccess {String[]} [aliases] An array of alias strings for the file.
+ * @apiSuccess {Object} [metadata] The metadata field may be of any data type
+ * and can hold any additional information you want to store.
  *
  */
 
 /**
  * @apiDefine Files
- * @apiSuccess {Object[]} data List of files
- * @apiSuccess {String} data._id Unique file identifier
- * @apiSuccess {String} data.name Human readable value of a file.
- * @apiSuccess {String} [data.code] Human(and machine) readable, unique
- * identifier of a prefined.
- * @apiSuccess {String} [data.symbol] A mark or sign that representing a
- * prefined.
- * @apiSuccess {String} [data.abbreviation] Human readable short form of a
- * file value.
- * @apiSuccess {String} [data.description] A brief summary about a file if
- * available i.e additional details that clarify what a file is for.
- * @apiSuccess {Number} [data.weight=0] Weight of the file to help in
- * ordering files of a given namespace.
- * @apiSuccess {String} [data.color] A color in hexadecimal format used to
- * differentiate filed value visually from one other.
- * @apiSuccess {String} [data.icon] An icon in url or base64 format used to
- * differentiate files visually.
- * @apiSuccess {Geometry} [data.geometry] A geo-geometry representation of a
- * filed.
- * @apiSuccess {Map} [data.properties] A map of key value pairs to allow to
- * associate other meaningful information to a filed.
- * @apiSuccess {Date} [data.createdAt] Date when file was created
- * @apiSuccess {Date} [data.updatedAt] Date when file was last updated
+ * @apiSuccess {String} data._id Unique file identifier.
+ * @apiSuccess {Number} data.length The size of file in bytes.
+ * @apiSuccess {Number} data.chuckSize The size of each file chunk in bytes.
+ * @apiSuccess {Date} data.uploadDate The date the file was first stored.
+ * @apiSuccess {String} data.md5 md5 file digest.
+ * @apiSuccess {String} data.filename A human-readable file name.
+ * @apiSuccess {String} data.contentType A valid MIME type for the file.
+ * @apiSuccess {String[]} [data.aliases] An array of alias strings for the file.
+ * @apiSuccess {Object} [data.metadata] The metadata field may be of any data
+ * type and can hold any additional information you want to store.
  * @apiSuccess {Number} total Total number of file
  * @apiSuccess {Number} size Number of files returned
  * @apiSuccess {Number} limit Query limit used
@@ -77,14 +53,14 @@
  * @apiDefine FileSuccessResponse
  * @apiSuccessExample {json} Success-Response:
  * {
- *   _id: "5ce1a93ba7e7a56060e42981",
- *   name: "Kilogram",
- *   code: "Kg",
- *   abbreviation: "Kg",
- *   weight: 0,
- *   color: "#F2AB6D",
- *   updatedAt: "2019-05-19T19:09:52.261Z",
- *   createdAt: "2019-05-19T19:06:35.721Z"
+ *  "_id": "5cf27b2424f7781da035a7a9",
+ *  "length": 9510,
+ *  "chunkSize": 261120,
+ *  "uploadDate": "2019-06-01T13:18:30.812Z",
+ *  "md5": "1a390457089d61efab08550a85c1988a",
+ *  "filename": "file.txt",
+ *  "contentType": "text/plain"
+ *  "aliases": ["notes"],
  * }
  *
  */
@@ -94,14 +70,14 @@
  * @apiSuccessExample {json} Success-Response:
  * {
  *   "data": [{
- *     _id: "5ce1a93ba7e7a56060e42981",
- *     name: "Kilogram",
- *     code: "Kg",
- *     abbreviation: "Kg",
- *     weight: 0,
- *     color: "#F2AB6D",
- *     updatedAt: "2019-05-19T19:09:52.261Z",
- *     createdAt: "2019-05-19T19:06:35.721Z"
+ *    "_id": "5cf27b2424f7781da035a7a9",
+ *    "length": 9510,
+ *    "chunkSize": 261120,
+ *    "uploadDate": "2019-06-01T13:18:30.812Z",
+ *    "md5": "1a390457089d61efab08550a85c1988a",
+ *    "filename": "file.txt",
+ *    "contentType": "text/plain"
+ *    "aliases": ["notes"],
  *   }],
  *   "total": 20,
  *   "size": 10,
@@ -140,7 +116,7 @@ const router = new Router({
 });
 
 /**
- * @api {get} /files List Files
+ * @api {get} /files/:bucket List Files
  * @apiVersion 1.0.0
  * @apiName GetFiles
  * @apiGroup File
@@ -163,7 +139,7 @@ router.get(
 );
 
 /**
- * @api {get} /files/schema Get File Schema
+ * @api {get} /files/:bucket/schema Get File Schema
  * @apiVersion 1.0.0
  * @apiName GetFileSchema
  * @apiGroup File
@@ -181,7 +157,7 @@ router.get(
 );
 
 /**
- * @api {post} /files Create New File
+ * @api {post} /files/:bucket Create New File
  * @apiVersion 1.0.0
  * @apiName PostFile
  * @apiGroup File
@@ -204,7 +180,7 @@ router.post(
 );
 
 /**
- * @api {get} /files/:id Get Existing File
+ * @api {get} /files/:bucket/:id Get Existing File
  * @apiVersion 1.0.0
  * @apiName GetFile
  * @apiGroup File
@@ -226,7 +202,7 @@ router.get(
 );
 
 /**
- * @api {patch} /files/:id Patch Existing File
+ * @api {patch} /files/:bucket/:id Patch Existing File
  * @apiVersion 1.0.0
  * @apiName PatchFile
  * @apiGroup File
@@ -249,7 +225,7 @@ router.patch(
 );
 
 /**
- * @api {put} /files/:id Put Existing File
+ * @api {put} /files/:bucket/:id Put Existing File
  * @apiVersion 1.0.0
  * @apiName PutFile
  * @apiGroup File
@@ -272,7 +248,7 @@ router.put(
 );
 
 /**
- * @api {delete} /files/:id Delete Existing File
+ * @api {delete} /files/:bucket/:id Delete Existing File
  * @apiVersion 1.0.0
  * @apiName DeleteFile
  * @apiGroup File
