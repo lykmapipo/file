@@ -102,18 +102,16 @@ import {
   deleteFor,
   Router,
 } from '@lykmapipo/express-rest-actions';
-import File from './file.model';
+import { createModels } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_SINGLE = '/files/:bucket/:id';
 const PATH_LIST = '/files/:bucket';
-const PATH_SCHEMA = '/files/:bucket/schema/';
+const PATH_SCHEMA = '/files/:bucket/schema';
 
 /* declarations */
-const router = new Router({
-  version: API_VERSION,
-});
+const router = new Router({ version: API_VERSION });
 
 /**
  * @api {get} /files/:bucket List Files
@@ -134,7 +132,10 @@ const router = new Router({
 router.get(
   PATH_LIST,
   getFor({
-    get: (options, done) => File.get(options, done),
+    get: (options, done) => {
+      const { File } = createModels();
+      return File.get(options, done);
+    },
   })
 );
 
@@ -150,6 +151,7 @@ router.get(
   PATH_SCHEMA,
   schemaFor({
     getSchema: (query, done) => {
+      const { File } = createModels();
       const jsonSchema = File.jsonSchema();
       return done(null, jsonSchema);
     },
@@ -175,7 +177,10 @@ router.get(
 router.post(
   PATH_LIST,
   postFor({
-    post: (body, done) => File.post(body, done),
+    post: (body, done) => {
+      const { File } = createModels();
+      File.post(body, done);
+    },
   })
 );
 
@@ -197,7 +202,10 @@ router.post(
 router.get(
   PATH_SINGLE,
   getByIdFor({
-    getById: (options, done) => File.getById(options, done),
+    getById: (options, done) => {
+      const { File } = createModels();
+      return File.getById(options, done);
+    },
   })
 );
 
@@ -220,7 +228,10 @@ router.get(
 router.patch(
   PATH_SINGLE,
   patchFor({
-    patch: (options, done) => File.patch(options, done),
+    patch: (options, done) => {
+      const { File } = createModels();
+      return File.patch(options, done);
+    },
   })
 );
 
@@ -243,7 +254,10 @@ router.patch(
 router.put(
   PATH_SINGLE,
   putFor({
-    put: (options, done) => File.put(options, done),
+    put: (options, done) => {
+      const { File } = createModels();
+      return File.put(options, done);
+    },
   })
 );
 
@@ -266,8 +280,11 @@ router.put(
 router.delete(
   PATH_SINGLE,
   deleteFor({
-    del: (options, done) => File.del(options, done),
     soft: true,
+    del: (options, done) => {
+      const { File } = createModels();
+      return File.del(options, done);
+    },
   })
 );
 
