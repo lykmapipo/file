@@ -96,13 +96,13 @@ import {
   getFor,
   schemaFor,
   getByIdFor,
-  postFor,
   patchFor,
   putFor,
   deleteFor,
   Router,
 } from '@lykmapipo/express-rest-actions';
-import { createModels } from './file.model';
+import multer from 'multer';
+import { createModels, createBuckets } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -176,12 +176,21 @@ router.get(
  */
 router.post(
   PATH_LIST,
-  postFor({
-    post: (body, done) => {
-      const { File } = createModels();
-      File.post(body, done);
-    },
-  })
+  (request, response, next) => {
+    const { files } = createBuckets();
+    const upload = multer({ storage: files }).single('file');
+    upload(request, response, error => {
+      if (error) {
+        next(error);
+      } else {
+        next();
+      }
+    });
+  },
+  (request, response) => {
+    const { File } = createModels();
+    response.ok(new File(request.file));
+  }
 );
 
 /**

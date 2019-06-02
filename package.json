@@ -10,7 +10,7 @@
     "build": "rollup -c",
     "lint": "eslint --fix --ext .js src/ test/ rollup.config.js",
     "pretest": "npm run lint",
-    "test": "NODE_ENV=test mocha --timeout 8000 --require @babel/register test/**/*.spec.js",
+    "test": "NODE_ENV=test mocha --timeout 80000 --require @babel/register test/**/*.spec.js",
     "test:unit": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/unit/**/*.spec.js",
     "test:integration": "npm run pretest && NODE_ENV=test mocha --require @babel/register test/integration/**/*.spec.js",
     "docs": "doxdox 'lib/**/*.js' -p package.json -l markdown -o DOCUMENTATION.md",
