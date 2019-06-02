@@ -290,10 +290,9 @@ router.put(
 router.delete(
   PATH_SINGLE,
   deleteFor({
-    soft: true,
     del: (options, done) => {
       const { File } = createModels();
-      return File.del(options, done);
+      return File.unlink(get(options, '_id'), done);
     },
   })
 );
