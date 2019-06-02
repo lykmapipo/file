@@ -192,7 +192,7 @@ router.post(
   },
   (request, response) => {
     const { File } = createModels();
-    response.ok(new File(request.file));
+    response.created(new File(request.file));
   }
 );
 

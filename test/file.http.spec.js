@@ -1,4 +1,3 @@
-import { mount } from '@lykmapipo/express-common';
 import {
   clear as clearDatabase,
   expect,
@@ -7,9 +6,6 @@ import {
 import {
   clear as clearHttp,
   testRouter,
-  testUpload,
-  testDownload,
-  testGet as testHttpGet,
 } from '@lykmapipo/express-test-helpers';
 import fileRouter from '../src/file.http.router';
 
@@ -30,6 +26,9 @@ const options = {
   pathSingle: '/files/:bucket/:id',
   pathList: '/files/:bucket',
   pathSchema: '/files/:bucket/schema',
+  pathUpload: '/files/:bucket',
+  pathDownload: '/files/:bucket/:id/download',
+  pathStream: '/files/:bucket/:id/chunks',
 };
 
 describe('HTTP API', () => {
@@ -39,14 +38,15 @@ describe('HTTP API', () => {
   let file;
 
   it('should handle HTTP POST on /files/:bucket', done => {
-    mount(fileRouter);
     const upload = {
+      bucket: 'files',
       aliases: faker.random.words().split(' '),
       attach: { file: `${__dirname}/fixtures/file.txt` },
     };
-    testUpload('/v1/files/files', upload)
+    const { testUpload } = testRouter(options, fileRouter);
+    testUpload(upload)
       .expect('Content-Type', /json/)
-      .expect(200, (error, { body }) => {
+      .expect(201, (error, { body }) => {
         expect(error).to.not.exist;
         expect(body).to.exist;
         expect(body._id).to.exist;
@@ -94,8 +94,9 @@ describe('HTTP API', () => {
   });
 
   it('should handle HTTP GET on /files/:bucket/:id/chunks', done => {
-    mount(fileRouter);
-    testHttpGet(`/v1/files/files/${file._id}/chunks`)
+    const { testStream } = testRouter(options, fileRouter);
+    const params = { bucket: 'files', id: file._id };
+    testStream(params)
       .expect('Content-Type', 'text/plain; charset=utf-8')
       .expect(200, (error, response) => {
         expect(error).to.not.exist;
@@ -105,8 +106,9 @@ describe('HTTP API', () => {
   });
 
   it('should handle HTTP GET on /files/:bucket/:id/download', done => {
-    mount(fileRouter);
-    testDownload(`/v1/files/files/${file._id}/download`)
+    const { testDownload } = testRouter(options, fileRouter);
+    const params = { bucket: 'files', id: file._id };
+    testDownload(params)
       .expect('Content-Type', 'text/plain; charset=utf-8')
       .expect('Content-Disposition', 'attachment; filename="file.txt"')
       .expect(200, (error, response) => {
