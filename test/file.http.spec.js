@@ -20,6 +20,9 @@ const properties = [
   'metadata',
   '_id',
   '__v',
+  'id',
+  'createdAt',
+  'updatedAt',
 ];
 
 const options = {
