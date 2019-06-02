@@ -113,7 +113,27 @@ describe('HTTP API', () => {
       });
   });
 
-  it.skip('should handle HTTP PUT on /files/:bucket/:id', done => done());
+  it('should handle HTTP PUT on /files/:bucket/:id', done => {
+    const { testPut } = testRouter(options, fileRouter);
+    const updates = { metadata: { owner: faker.name.findName() } };
+    const params = { bucket: 'files', id: file._id };
+    testPut(params, updates)
+      .expect('Content-Type', /json/)
+      .expect(200, (error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.exist;
+        expect(body._id).to.exist.and.be.eql(file._id);
+        expect(body.filename).to.exist.and.be.eql(file.filename);
+        expect(body.contentType).to.exist.and.be.eql(file.contentType);
+        expect(body.length).to.exist.and.be.eql(file.length);
+        expect(body.chunkSize).to.exist.and.be.eql(file.chunkSize);
+        expect(body.uploadDate).to.exist.and.be.eql(file.uploadDate);
+        expect(body.md5).to.exist.and.be.eql(file.md5);
+        expect(body.metadata).to.exist.and.be.eql(updates.metadata);
+        file = body;
+        done(error, body);
+      });
+  });
 
   it('should handle HTTP DELETE on /files/:bucket/:id', done => {
     const { testDelete } = testRouter(options, fileRouter);

@@ -271,7 +271,12 @@ router.put(
   putFor({
     put: (options, done) => {
       const { File } = createModels();
-      return File.put(options, done);
+      return File.findByIdAndUpdate(
+        get(options, '_id'),
+        pick(options, 'metadata', 'aliases'),
+        { new: true },
+        done
+      );
     },
   })
 );
