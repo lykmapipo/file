@@ -8,6 +8,7 @@ import {
   clear as clearHttp,
   testRouter,
   testUpload,
+  testGet as testHttpGet,
 } from '@lykmapipo/express-test-helpers';
 import fileRouter from '../src/file.http.router';
 
@@ -88,6 +89,17 @@ describe('HTTP API', () => {
         expect(body.uploadDate).to.exist.and.be.eql(file.uploadDate);
         expect(body.md5).to.exist.and.be.eql(file.md5);
         done(error, body);
+      });
+  });
+
+  it('should handle HTTP GET on /files/:bucket/:id/chunks', done => {
+    mount(fileRouter);
+    testHttpGet(`/v1/files/files/${file._id}/chunks`)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect(200, (error, response) => {
+        expect(error).to.not.exist;
+        expect(response).to.exist;
+        done(error, response);
       });
   });
 

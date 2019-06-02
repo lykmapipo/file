@@ -108,6 +108,7 @@ import { createModels, createBuckets } from './file.model';
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_SINGLE = '/files/:bucket/:id';
+const PATH_CHUNKS = '/files/:bucket/:id/chunks';
 const PATH_LIST = '/files/:bucket';
 const PATH_SCHEMA = '/files/:bucket/schema';
 
@@ -193,6 +194,33 @@ router.post(
     response.ok(new File(request.file));
   }
 );
+
+/**
+ * @api {get} /files/:bucket/:id/chunks Stream Existing File
+ * @apiVersion 1.0.0
+ * @apiName StreamFile
+ * @apiGroup File
+ * @apiDescription Stream existing file
+ * @apiUse RequestHeaders
+ * @apiUse File
+ *
+ * @apiUse RequestHeadersExample
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_CHUNKS, (request, response, next) => {
+  const { File } = createModels();
+  const options = request.params;
+  File.findById(get(options, 'id'), (error, file) => {
+    if (error) {
+      next(error);
+    } else {
+      response.type(file.contentType);
+      file.read().pipe(response);
+    }
+  });
+});
 
 /**
  * @api {get} /files/:bucket/:id Get Existing File
