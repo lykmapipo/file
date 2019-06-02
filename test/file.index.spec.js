@@ -1,6 +1,11 @@
-import { ObjectId } from '@lykmapipo/mongoose-common';
+import { ObjectId, GridFSBucket } from '@lykmapipo/mongoose-common';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
-import { Buckets, FileTypes, createModels } from '../src/file.model';
+import {
+  Buckets,
+  FileTypes,
+  createModels,
+  createBuckets,
+} from '../src/file.model';
 
 describe('Index', () => {
   it('should expose bucket definitions', () => {
@@ -90,5 +95,29 @@ describe('Index', () => {
     expect(Document.schema).to.exist;
     expect(Document.modelName).to.be.equal('Document');
     expect(Document.collection.name).to.be.equal('documents.files');
+  });
+
+  it('should be able to create buckets', () => {
+    const { files, images, audios, videos, documents } = createBuckets();
+
+    expect(files).to.exist;
+    expect(files).to.be.an.instanceof(GridFSBucket);
+    expect(files.collectionName).to.be.equal('fs.files');
+
+    expect(images).to.exist;
+    expect(images).to.be.an.instanceof(GridFSBucket);
+    expect(images.collectionName).to.be.equal('images.files');
+
+    expect(audios).to.exist;
+    expect(audios).to.be.an.instanceof(GridFSBucket);
+    expect(audios.collectionName).to.be.equal('audios.files');
+
+    expect(videos).to.exist;
+    expect(videos).to.be.an.instanceof(GridFSBucket);
+    expect(videos.collectionName).to.be.equal('videos.files');
+
+    expect(documents).to.exist;
+    expect(documents).to.be.an.instanceof(GridFSBucket);
+    expect(documents.collectionName).to.be.equal('documents.files');
   });
 });

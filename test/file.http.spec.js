@@ -27,7 +27,7 @@ const options = {
   pathSchema: '/files/:bucket/schema',
 };
 
-describe.only('HTTP API', () => {
+describe('HTTP API', () => {
   before(() => clearHttp());
   before(done => clearDatabase(done));
 

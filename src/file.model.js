@@ -19,7 +19,7 @@
  *
  */
 import { ObjectId } from '@lykmapipo/mongoose-common';
-import { createModel } from 'mongoose-gridfs';
+import { createModel, createBucket } from 'mongoose-gridfs';
 
 /**
  * @constant Buckets
@@ -77,6 +77,45 @@ export const FileTypes = {
   Audio: { type: ObjectId, ref: 'Audio', autopopulate: true },
   Video: { type: ObjectId, ref: 'Video', autopopulate: true },
   Document: { type: ObjectId, ref: 'Document', autopopulate: true },
+};
+
+/**
+ * @function createBuckets
+ * @name createBuckets
+ * @description Create common GridFS buckets
+ * @return {Object} Buckets valid GridFS buckets
+ * @return {Model} Buckets.files valid File GridFS bucket
+ * @return {Model} Buckets.images valid Image GridFS bucket
+ * @return {Model} Buckets.audios valid Audio GridFS bucket
+ * @return {Model} Buckets.videos valid Video GridFS bucket
+ * @return {Model} Buckets.documents valid Document GridFS bucket
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import { createBuckets } from '@lykmapipo/file';
+ *
+ * const { files, images, audio, video, documents } = createBuckets();
+ *
+ * files.writeFile({ filename }, stream, (error, file) => { ... });
+ * files.readFile({ _id }, (error, file) => { ... });
+ * files.unlink(_id, (error, _id) => { ... });
+ *
+ */
+export const createBuckets = () => {
+  // create common GridFS buckets
+  const files = createBucket(Buckets.File);
+  const images = createBucket(Buckets.Image);
+  const audios = createBucket(Buckets.Audio);
+  const videos = createBucket(Buckets.Video);
+  const documents = createBucket(Buckets.Document);
+
+  // return GridFS buckets
+  return { files, images, audios, videos, documents };
 };
 
 /**
