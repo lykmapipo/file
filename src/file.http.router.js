@@ -91,7 +91,7 @@
  */
 
 /* dependencies */
-import { get } from 'lodash';
+import { get, pick } from 'lodash';
 import { getString } from '@lykmapipo/env';
 import {
   getFor,
@@ -240,7 +240,12 @@ router.patch(
   patchFor({
     patch: (options, done) => {
       const { File } = createModels();
-      return File.patch(options, done);
+      return File.findByIdAndUpdate(
+        get(options, '_id'),
+        pick(options, 'metadata', 'aliases'),
+        { new: true },
+        done
+      );
     },
   })
 );
