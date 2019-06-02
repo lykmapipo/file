@@ -91,7 +91,7 @@
  */
 
 /* dependencies */
-import { get, pick } from 'lodash';
+import { get } from 'lodash';
 import { getString } from '@lykmapipo/env';
 import {
   getFor,
@@ -214,7 +214,7 @@ router.post(
 router.get(PATH_CHUNKS, (request, response, next) => {
   const { File } = createModels();
   const options = request.params;
-  File.findById(get(options, 'id'), (error, file) => {
+  File.getById(get(options, 'id'), (error, file) => {
     if (error) {
       next(error);
     } else {
@@ -241,7 +241,7 @@ router.get(PATH_CHUNKS, (request, response, next) => {
 router.get(PATH_DOWNLOAD, (request, response, next) => {
   const { File } = createModels();
   const options = request.params;
-  File.findById(get(options, 'id'), (error, file) => {
+  File.getById(get(options, 'id'), (error, file) => {
     if (error) {
       next(error);
     } else {
@@ -269,9 +269,10 @@ router.get(PATH_DOWNLOAD, (request, response, next) => {
 router.get(
   PATH_SINGLE,
   getByIdFor({
+    filterParams: false,
     getById: (options, done) => {
       const { File } = createModels();
-      return File.findById(get(options, '_id'), done);
+      return File.getById(options, done);
     },
   })
 );
@@ -295,14 +296,10 @@ router.get(
 router.patch(
   PATH_SINGLE,
   patchFor({
+    filterParams: false,
     patch: (options, done) => {
       const { File } = createModels();
-      return File.findByIdAndUpdate(
-        get(options, '_id'),
-        pick(options, 'metadata', 'aliases'),
-        { new: true },
-        done
-      );
+      return File.patch(options, done);
     },
   })
 );
@@ -326,14 +323,10 @@ router.patch(
 router.put(
   PATH_SINGLE,
   putFor({
+    filterParams: false,
     put: (options, done) => {
       const { File } = createModels();
-      return File.findByIdAndUpdate(
-        get(options, '_id'),
-        pick(options, 'metadata', 'aliases'),
-        { new: true },
-        done
-      );
+      return File.put(options, done);
     },
   })
 );
@@ -358,6 +351,7 @@ router.delete(
   PATH_SINGLE,
   deleteFor({
     soft: false,
+    filterParams: false,
     del: (options, done) => {
       const { File } = createModels();
       return File.unlink(get(options, '_id'), done);
