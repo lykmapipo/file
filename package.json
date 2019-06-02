@@ -70,7 +70,7 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
-    "@lykmapipo/express-test-helpers": "^0.7.2",
+    "@lykmapipo/express-test-helpers": "^0.8.0",
     "@lykmapipo/mongoose-test-helpers": "^0.7.5",
     "chai": "^4.2.0",
     "commitizen": "^3.1.1",
@@ -97,10 +97,10 @@
     "mongoose": ">=5.5.12"
   },
   "dependencies": {
-    "@lykmapipo/common": ">=0.19.0",
+    "@lykmapipo/common": ">=0.19.1",
     "@lykmapipo/env": ">=0.7.8",
-    "@lykmapipo/express-common": ">=0.17.3",
-    "@lykmapipo/express-rest-actions": ">=0.6.0",
+    "@lykmapipo/express-common": ">=0.17.4",
+    "@lykmapipo/express-rest-actions": ">=0.6.1",
     "@lykmapipo/mongoose-common": ">=0.23.5",
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
