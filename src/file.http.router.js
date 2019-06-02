@@ -91,6 +91,7 @@
  */
 
 /* dependencies */
+import { get } from 'lodash';
 import { getString } from '@lykmapipo/env';
 import {
   getFor,
@@ -213,7 +214,7 @@ router.get(
   getByIdFor({
     getById: (options, done) => {
       const { File } = createModels();
-      return File.getById(options, done);
+      return File.findById(get(options, '_id'), done);
     },
   })
 );
