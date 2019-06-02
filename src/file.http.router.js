@@ -135,6 +135,7 @@ const router = new Router({ version: API_VERSION });
 router.get(
   PATH_LIST,
   getFor({
+    filterParams: false,
     get: (options, done) => {
       const { File } = createModels();
       return File.get(options, done);
@@ -356,6 +357,7 @@ router.put(
 router.delete(
   PATH_SINGLE,
   deleteFor({
+    soft: false,
     del: (options, done) => {
       const { File } = createModels();
       return File.unlink(get(options, '_id'), done);

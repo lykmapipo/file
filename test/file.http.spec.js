@@ -64,7 +64,31 @@ describe('HTTP API', () => {
       });
   });
 
-  it.skip('should handle HTTP GET on /files/:bucket', done => done());
+  it('should handle HTTP GET on /files/:bucket', done => {
+    const { testGet } = testRouter(options, fileRouter);
+    const params = { bucket: 'files' };
+    testGet(params)
+      .expect('Content-Type', /json/)
+      .expect(200, (error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.exist;
+        expect(body.data).to.exist;
+        expect(body.data).to.have.length.at.least(1);
+        expect(body.total).to.exist;
+        expect(body.total).to.be.at.least(1);
+        expect(body.limit).to.exist;
+        expect(body.limit).to.be.equal(10);
+        expect(body.skip).to.exist;
+        expect(body.skip).to.be.equal(0);
+        expect(body.page).to.exist;
+        expect(body.page).to.be.equal(1);
+        expect(body.pages).to.exist;
+        expect(body.pages).to.be.at.least(1);
+        expect(body.lastModified).to.exist;
+        expect(body.hasMore).to.exist;
+        done(error, body);
+      });
+  });
 
   it('should handle HTTP GET on /files/:bucket/schema', done => {
     const { testGetSchema } = testRouter(options, fileRouter);
@@ -72,7 +96,7 @@ describe('HTTP API', () => {
       expect(error).to.not.exist;
       expect(body).to.exist;
       expect(body).to.have.all.keys('title', 'type', 'properties');
-      expect(body.properties).to.have.all.keys(...properties);
+      expect(body.properties).to.have.any.keys(...properties);
       done(error, body);
     });
   });

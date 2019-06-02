@@ -20,6 +20,7 @@
  */
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
+import actions from 'mongoose-rest-actions';
 
 /**
  * @constant Buckets
@@ -148,11 +149,11 @@ export const createBuckets = () => {
  */
 export const createModels = () => {
   // create common file models
-  const File = createModel(Buckets.File);
-  const Image = createModel(Buckets.Image);
-  const Audio = createModel(Buckets.Audio);
-  const Video = createModel(Buckets.Video);
-  const Document = createModel(Buckets.Document);
+  const File = createModel(Buckets.File, actions);
+  const Image = createModel(Buckets.Image, actions);
+  const Audio = createModel(Buckets.Audio, actions);
+  const Video = createModel(Buckets.Video, actions);
+  const Document = createModel(Buckets.Document, actions);
 
   // return file models
   return { File, Image, Audio, Video, Document };
