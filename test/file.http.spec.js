@@ -8,6 +8,7 @@ import {
   clear as clearHttp,
   testRouter,
   testUpload,
+  testDownload,
   testGet as testHttpGet,
 } from '@lykmapipo/express-test-helpers';
 import fileRouter from '../src/file.http.router';
@@ -96,6 +97,18 @@ describe('HTTP API', () => {
     mount(fileRouter);
     testHttpGet(`/v1/files/files/${file._id}/chunks`)
       .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect(200, (error, response) => {
+        expect(error).to.not.exist;
+        expect(response).to.exist;
+        done(error, response);
+      });
+  });
+
+  it('should handle HTTP GET on /files/:bucket/:id/download', done => {
+    mount(fileRouter);
+    testDownload(`/v1/files/files/${file._id}/download`)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Disposition', 'attachment; filename="file.txt"')
       .expect(200, (error, response) => {
         expect(error).to.not.exist;
         expect(response).to.exist;
