@@ -31,6 +31,9 @@ describe.only('HTTP API', () => {
   before(() => clearHttp());
   before(done => clearDatabase(done));
 
+  it.skip('should handle HTTP POST on /files/:bucket', done => done());
+  it.skip('should handle HTTP GET on /files/:bucket', done => done());
+
   it('should handle HTTP GET on /files/:bucket/schema', done => {
     const { testGetSchema } = testRouter(options, fileRouter);
     testGetSchema({ bucket: 'files' }).expect(200, (error, { body }) => {
@@ -41,6 +44,11 @@ describe.only('HTTP API', () => {
       done(error, body);
     });
   });
+
+  it.skip('should handle HTTP GET on /files/:bucket/:id', done => done());
+  it.skip('should handle HTTP PATCH on /files/:bucket/:id', done => done());
+  it.skip('should handle HTTP PUT on /files/:bucket/:id', done => done());
+  it.skip('should handle HTTP DELETE on /files/:bucket/:id', done => done());
 
   after(() => clearHttp());
   after(done => clearDatabase(done));
