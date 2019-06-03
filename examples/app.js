@@ -1,3 +1,5 @@
+'use strict';
+
 /* dependencies */
 const _ = require('lodash');
 const { connect } = require('@lykmapipo/mongoose-common');
@@ -17,7 +19,7 @@ connect(error => {
     response.json(info);
   });
 
-  // mount router
+  // mount file router
   mount(fileRouter);
 
   // fire the app
@@ -33,4 +35,5 @@ connect(error => {
       console.log(`visit http://0.0.0.0:${env.PORT}/${apiVersion}/${path}`);
     });
   });
+  
 });
