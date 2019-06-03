@@ -67,7 +67,7 @@ connect(error => {
   }
 
   // do seeding
-  const seeds = [seedFile, seedImage, seedAudio, seedVideo];
+  const seeds = [seedFile, seedImage, seedAudio, seedVideo, seedDocument];
   parallel(seeds, error => {
     // re-throw if error
     if (error) {

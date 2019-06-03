@@ -91,7 +91,7 @@
  */
 
 /* dependencies */
-import { get } from 'lodash';
+import { get, omit } from 'lodash';
 import { getString } from '@lykmapipo/env';
 import {
   getFor,
@@ -135,10 +135,9 @@ const router = new Router({ version: API_VERSION });
 router.get(
   PATH_LIST,
   getFor({
-    filterParams: false,
     get: (options, done) => {
       const File = modelForBucket(get(options, 'filter.bucket'));
-      return File.get(options, done);
+      return File.get(omit(options, 'filter.bucket'), done);
     },
   })
 );
@@ -269,10 +268,9 @@ router.get(PATH_DOWNLOAD, (request, response, next) => {
 router.get(
   PATH_SINGLE,
   getByIdFor({
-    filterParams: false,
     getById: (options, done) => {
       const File = modelForBucket(get(options, 'filter.bucket'));
-      return File.getById(options, done);
+      return File.getById(omit(options, 'filter.bucket'), done);
     },
   })
 );
@@ -296,10 +294,9 @@ router.get(
 router.patch(
   PATH_SINGLE,
   patchFor({
-    filterParams: false,
     patch: (options, done) => {
       const File = modelForBucket(get(options, 'filter.bucket'));
-      return File.patch(options, done);
+      return File.patch(omit(options, 'filter.bucket'), done);
     },
   })
 );
@@ -323,10 +320,9 @@ router.patch(
 router.put(
   PATH_SINGLE,
   putFor({
-    filterParams: false,
     put: (options, done) => {
       const File = modelForBucket(get(options, 'filter.bucket'));
-      return File.put(options, done);
+      return File.put(omit(options, 'filter.bucket'), done);
     },
   })
 );
@@ -351,7 +347,6 @@ router.delete(
   PATH_SINGLE,
   deleteFor({
     soft: false,
-    filterParams: false,
     del: (options, done) => {
       const File = modelForBucket(get(options, 'filter.bucket'));
       return File.unlink(get(options, '_id'), done);
