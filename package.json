@@ -17,7 +17,7 @@
     "cmt": "git add -A && git-cz",
     "changelog": "changelog",
     "chore:deps": "ncu -u && npm install --save",
-    "dev": "npm run seed && npm run start",
+    "dev": "npm run start",
     "start": "BASE_PATH=./examples node ./examples/app.js",
     "seed": "BASE_PATH=./examples node ./examples/seed.js"
   },
