@@ -18,6 +18,7 @@
  * File.wite({ filename }, in, (error, file) => { ... });
  *
  */
+import { find, get, values } from 'lodash';
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
 import actions from 'mongoose-rest-actions';
@@ -157,4 +158,47 @@ export const createModels = () => {
 
   // return file models
   return { File, Image, Audio, Video, Document };
+};
+
+/**
+ * @function modelForBucket
+ * @name modelForBucket
+ * @description Derive model for a given bucket name
+ * @return {Model} valid mongoose models
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import { modelForBucket } from '@lykmapipo/file';
+ *
+ * const { Image } = modelForBucket('images');
+ *
+ * Image.write({ filename }, stream, (error, file) => { ... });
+ * Image.read({ _id }, (error, file) => { ... });
+ * Image.unlink(_id, (error, file) => { ... });
+ * Image.find((error, files) => { ... });
+ *
+ */
+export const modelForBucket = bucket => {
+  // create models
+  const models = createModels();
+
+  // use default bucket
+  let bucketInfo = Buckets.File;
+
+  // obtain model for specified bucket
+  bucketInfo = find(values(Buckets), { bucketName: bucket }) || bucketInfo;
+
+  // obtain GridFS file model name
+  const { modelName } = bucketInfo;
+
+  // obtain GridFS file model
+  const Model = get(models, modelName);
+
+  // return found GridFS model
+  return Model;
 };
