@@ -103,7 +103,7 @@ import {
   Router,
 } from '@lykmapipo/express-rest-actions';
 import multer from 'multer';
-import { createModels, createBuckets, modelForBucket } from './file.model';
+import { createModels, createBuckets, modelFor } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -136,7 +136,7 @@ router.get(
   PATH_LIST,
   getFor({
     get: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       return File.get(omit(options, 'filter.bucket'), done);
     },
   })
@@ -154,7 +154,7 @@ router.get(
   PATH_SCHEMA,
   schemaFor({
     getSchema: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       const jsonSchema = File.jsonSchema();
       return done(null, jsonSchema);
     },
@@ -213,7 +213,7 @@ router.post(
  */
 router.get(PATH_CHUNKS, (request, response, next) => {
   const { id, bucket } = request.params;
-  const File = modelForBucket(bucket);
+  const File = modelFor(bucket);
   File.getById(id, (error, file) => {
     if (error) {
       next(error);
@@ -240,7 +240,7 @@ router.get(PATH_CHUNKS, (request, response, next) => {
  */
 router.get(PATH_DOWNLOAD, (request, response, next) => {
   const { id, bucket } = request.params;
-  const File = modelForBucket(bucket);
+  const File = modelFor(bucket);
   File.getById(id, (error, file) => {
     if (error) {
       next(error);
@@ -270,7 +270,7 @@ router.get(
   PATH_SINGLE,
   getByIdFor({
     getById: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       return File.getById(omit(options, 'filter.bucket'), done);
     },
   })
@@ -296,7 +296,7 @@ router.patch(
   PATH_SINGLE,
   patchFor({
     patch: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       return File.patch(omit(options, 'filter.bucket'), done);
     },
   })
@@ -322,7 +322,7 @@ router.put(
   PATH_SINGLE,
   putFor({
     put: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       return File.put(omit(options, 'filter.bucket'), done);
     },
   })
@@ -349,7 +349,7 @@ router.delete(
   deleteFor({
     soft: false,
     del: (options, done) => {
-      const File = modelForBucket(get(options, 'filter.bucket'));
+      const File = modelFor(get(options, 'filter.bucket'));
       return File.unlink(get(options, '_id'), done);
     },
   })

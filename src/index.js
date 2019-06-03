@@ -17,7 +17,14 @@
 import { pkg } from '@lykmapipo/common';
 import { apiVersion as httpApiVersion } from '@lykmapipo/env';
 import { start } from '@lykmapipo/express-rest-actions';
-import { Buckets, FileTypes, createBuckets, createModels } from './file.model';
+import {
+  Buckets,
+  FileTypes,
+  createBuckets,
+  createModels,
+  modelFor,
+  bucketFor,
+} from './file.model';
 import fileRouter from './file.http.router';
 
 export const info = pkg(
@@ -35,4 +42,13 @@ export const info = pkg(
 
 export const apiVersion = httpApiVersion();
 
-export { Buckets, FileTypes, createBuckets, createModels, fileRouter, start };
+export {
+  Buckets,
+  FileTypes,
+  createBuckets,
+  createModels,
+  modelFor,
+  bucketFor,
+  fileRouter,
+  start,
+};

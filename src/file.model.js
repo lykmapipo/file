@@ -161,8 +161,8 @@ export const createModels = () => {
 };
 
 /**
- * @function modelForBucket
- * @name modelForBucket
+ * @function modelFor
+ * @name modelFor
  * @description Derive model for a given bucket name
  * @return {Model} valid mongoose models
  * @author lally elias <lallyelias87@mail.com>
@@ -173,9 +173,9 @@ export const createModels = () => {
  * @public
  * @example
  *
- * import { modelForBucket } from '@lykmapipo/file';
+ * import { modelFor } from '@lykmapipo/file';
  *
- * const Image = modelForBucket('images');
+ * const Image = modelFor('images');
  *
  * Image.write({ filename }, stream, (error, file) => { ... });
  * Image.read({ _id }, (error, file) => { ... });
@@ -183,7 +183,7 @@ export const createModels = () => {
  * Image.find((error, files) => { ... });
  *
  */
-export const modelForBucket = bucket => {
+export const modelFor = bucket => {
   // create models
   const models = createModels();
 

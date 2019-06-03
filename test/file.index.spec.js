@@ -5,7 +5,7 @@ import {
   FileTypes,
   createModels,
   createBuckets,
-  modelForBucket,
+  modelFor,
   bucketFor,
 } from '../src/file.model';
 
@@ -124,43 +124,43 @@ describe('Index', () => {
   });
 
   it('should be able to get model for a bucket', () => {
-    let File = modelForBucket();
+    let File = modelFor();
     expect(File).to.exist;
     expect(File.schema).to.exist;
     expect(File.modelName).to.be.equal('File');
     expect(File.collection.name).to.be.equal('fs.files');
 
-    File = modelForBucket('any');
+    File = modelFor('any');
     expect(File).to.exist;
     expect(File.schema).to.exist;
     expect(File.modelName).to.be.equal('File');
     expect(File.collection.name).to.be.equal('fs.files');
 
-    File = modelForBucket('files');
+    File = modelFor('files');
     expect(File).to.exist;
     expect(File.schema).to.exist;
     expect(File.modelName).to.be.equal('File');
     expect(File.collection.name).to.be.equal('fs.files');
 
-    const Image = modelForBucket('images');
+    const Image = modelFor('images');
     expect(Image).to.exist;
     expect(Image.schema).to.exist;
     expect(Image.modelName).to.be.equal('Image');
     expect(Image.collection.name).to.be.equal('images.files');
 
-    const Audio = modelForBucket('audios');
+    const Audio = modelFor('audios');
     expect(Audio).to.exist;
     expect(Audio.schema).to.exist;
     expect(Audio.modelName).to.be.equal('Audio');
     expect(Audio.collection.name).to.be.equal('audios.files');
 
-    const Video = modelForBucket('videos');
+    const Video = modelFor('videos');
     expect(Video).to.exist;
     expect(Video.schema).to.exist;
     expect(Video.modelName).to.be.equal('Video');
     expect(Video.collection.name).to.be.equal('videos.files');
 
-    const Document = modelForBucket('documents');
+    const Document = modelFor('documents');
     expect(Document).to.exist;
     expect(Document.schema).to.exist;
     expect(Document.modelName).to.be.equal('Document');
