@@ -103,7 +103,7 @@ import {
   Router,
 } from '@lykmapipo/express-rest-actions';
 import multer from 'multer';
-import { createModels, createBuckets } from './file.model';
+import { createModels, createBuckets, modelForBucket } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -137,7 +137,7 @@ router.get(
   getFor({
     filterParams: false,
     get: (options, done) => {
-      const { File } = createModels();
+      const File = modelForBucket(get(options, 'filter.bucket'));
       return File.get(options, done);
     },
   })
@@ -154,8 +154,8 @@ router.get(
 router.get(
   PATH_SCHEMA,
   schemaFor({
-    getSchema: (query, done) => {
-      const { File } = createModels();
+    getSchema: (options, done) => {
+      const File = modelForBucket(get(options, 'filter.bucket'));
       const jsonSchema = File.jsonSchema();
       return done(null, jsonSchema);
     },
@@ -271,7 +271,7 @@ router.get(
   getByIdFor({
     filterParams: false,
     getById: (options, done) => {
-      const { File } = createModels();
+      const File = modelForBucket(get(options, 'filter.bucket'));
       return File.getById(options, done);
     },
   })
@@ -298,7 +298,7 @@ router.patch(
   patchFor({
     filterParams: false,
     patch: (options, done) => {
-      const { File } = createModels();
+      const File = modelForBucket(get(options, 'filter.bucket'));
       return File.patch(options, done);
     },
   })
@@ -325,7 +325,7 @@ router.put(
   putFor({
     filterParams: false,
     put: (options, done) => {
-      const { File } = createModels();
+      const File = modelForBucket(get(options, 'filter.bucket'));
       return File.put(options, done);
     },
   })
@@ -353,7 +353,7 @@ router.delete(
     soft: false,
     filterParams: false,
     del: (options, done) => {
-      const { File } = createModels();
+      const File = modelForBucket(get(options, 'filter.bucket'));
       return File.unlink(get(options, '_id'), done);
     },
   })
