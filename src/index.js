@@ -7,30 +7,19 @@
  * @author lally elias <lallyelias87@gmail.com>
  * @licence MIT
  * @since  0.1.0
- * @version 0.2.0
+ * @version 0.1.0
  * @example
  *
- * const { app } = require('@lykmapipo/file');
- * app.start();
+ * const { start } = require('@lykmapipo/file');
+ * start((error) => { ... });
  *
  */
-
-/* dependencies */
 import { pkg } from '@lykmapipo/common';
 import { apiVersion as httpApiVersion } from '@lykmapipo/env';
 import { start } from '@lykmapipo/express-rest-actions';
-import File from './file.model';
+import { Buckets, FileTypes, createBuckets, createModels } from './file.model';
 import fileRouter from './file.http.router';
 
-/**
- * @name info
- * @description package information
- * @type {Object}
- *
- * @author lally elias <lallyelias87@gmail.com>
- * @since 1.0.0
- * @version 0.1.0
- */
 export const info = pkg(
   `${__dirname}/package.json`,
   'name',
@@ -44,37 +33,6 @@ export const info = pkg(
   'contributors'
 );
 
-/**
- * @name File
- * @description File model
- * @type {mongoose.Model}
- *
- * @author lally elias <lallyelias87@gmail.com>
- * @since 0.1.0
- * @version 0.1.0
- */
-export { File };
-
-/**
- * @name fileRouter
- * @description file http router
- * @type {express.Router}
- *
- * @author lally elias <lallyelias87@gmail.com>
- * @since 0.1.0
- * @version 0.1.0
- */
-export { fileRouter };
-
-/**
- * @name apiVersion
- * @description http router api version
- * @type {String}
- *
- * @author lally elias <lallyelias87@gmail.com>
- * @since 0.1.0
- * @version 0.1.0
- */
 export const apiVersion = httpApiVersion();
 
-export { start };
+export { Buckets, FileTypes, createBuckets, createModels, fileRouter, start };
