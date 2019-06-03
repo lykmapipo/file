@@ -18,9 +18,13 @@
  * File.wite({ filename }, in, (error, file) => { ... });
  *
  */
-import { find, get, values } from 'lodash';
+import { find, get, values, set } from 'lodash';
+// import { parallel } from 'async';
+// import { compact, mergeObjects } from '@lykmapipo/common';
+import { mergeObjects } from '@lykmapipo/common';
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
+import multer from 'multer';
 import actions from 'mongoose-rest-actions';
 
 /**
@@ -40,11 +44,15 @@ import actions from 'mongoose-rest-actions';
  *
  */
 export const Buckets = {
-  File: { modelName: 'File', bucketName: 'fs' },
-  Image: { modelName: 'Image', bucketName: 'images' },
-  Audio: { modelName: 'Audio', bucketName: 'audios' },
-  Video: { modelName: 'Video', bucketName: 'videos' },
-  Document: { modelName: 'Document', bucketName: 'documents' },
+  File: { modelName: 'File', bucketName: 'fs', field: 'file' },
+  Image: { modelName: 'Image', bucketName: 'images', field: 'image' },
+  Audio: { modelName: 'Audio', bucketName: 'audios', field: 'audio' },
+  Video: { modelName: 'Video', bucketName: 'videos', field: 'video' },
+  Document: {
+    modelName: 'Document',
+    bucketName: 'documents',
+    field: 'document',
+  },
 };
 
 /**
@@ -243,4 +251,50 @@ export const bucketFor = bucket => {
 
   // return found GridFSBucket instance
   return Bucket;
+};
+
+export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
+  // obtain bucket name
+  const { bucket = 'fs' } = request.params;
+
+  // obtain bucket options
+  const { field, bucketName } =
+    find(Buckets, { bucketName: bucket }) || Buckets.File;
+
+  // obtain GridFSBucket storage
+  const storage = bucketFor(bucketName);
+
+  // obtain model for the bucket
+  const File = modelFor(bucketName);
+
+  // create multer uploader
+  const upload = multer({ storage }).single(field);
+
+  // do upload
+  upload(request, response, error => {
+    // backoff on error
+    if (error) {
+      return next(error);
+    }
+
+    // extend request with file instance
+    if (request.file && request.file.fieldname === field) {
+      // create file instance
+      const file = new File(request.file);
+
+      // set file to request
+      request.file = file;
+
+      // set file to body
+      const body = mergeObjects(request.body);
+      set(body, field, file);
+      request.body = body;
+
+      // continue
+      return next();
+    }
+
+    // continue
+    return next();
+  });
 };

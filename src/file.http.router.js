@@ -102,8 +102,7 @@ import {
   deleteFor,
   Router,
 } from '@lykmapipo/express-rest-actions';
-import multer from 'multer';
-import { createModels, createBuckets, modelFor } from './file.model';
+import { modelFor, uploaderFor } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -177,25 +176,9 @@ router.get(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.post(
-  PATH_LIST,
-  (request, response, next) => {
-    // const { bucket } = request.params;
-    const { files } = createBuckets();
-    const upload = multer({ storage: files }).single('file');
-    upload(request, response, error => {
-      if (error) {
-        next(error);
-      } else {
-        next();
-      }
-    });
-  },
-  (request, response) => {
-    const { File } = createModels();
-    response.created(new File(request.file));
-  }
-);
+router.post(PATH_LIST, uploaderFor(), (request, response) => {
+  response.created(request.file);
+});
 
 /**
  * @api {get} /files/:bucket/:id/chunks Stream Existing File

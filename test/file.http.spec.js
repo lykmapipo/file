@@ -43,7 +43,7 @@ describe('HTTP API', () => {
   it('should handle HTTP POST on /files/:bucket', done => {
     const upload = {
       bucket: 'files',
-      aliases: faker.random.words().split(' '),
+      aliases: faker.random.word(),
       attach: { file: `${__dirname}/fixtures/file.txt` },
     };
     const { testUpload } = testRouter(options, fileRouter);
