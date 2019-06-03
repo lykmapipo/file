@@ -213,8 +213,8 @@ router.post(
  */
 router.get(PATH_CHUNKS, (request, response, next) => {
   const { File } = createModels();
-  const options = request.params;
-  File.getById(get(options, 'id'), (error, file) => {
+  const { id } = request.params;
+  File.getById(id, (error, file) => {
     if (error) {
       next(error);
     } else {
@@ -240,8 +240,8 @@ router.get(PATH_CHUNKS, (request, response, next) => {
  */
 router.get(PATH_DOWNLOAD, (request, response, next) => {
   const { File } = createModels();
-  const options = request.params;
-  File.getById(get(options, 'id'), (error, file) => {
+  const { id } = request.params;
+  File.getById(id, (error, file) => {
     if (error) {
       next(error);
     } else {
