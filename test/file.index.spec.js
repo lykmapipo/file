@@ -6,6 +6,7 @@ import {
   createModels,
   createBuckets,
   modelForBucket,
+  bucketFor,
 } from '../src/file.model';
 
 describe('Index', () => {
@@ -164,5 +165,37 @@ describe('Index', () => {
     expect(Document.schema).to.exist;
     expect(Document.modelName).to.be.equal('Document');
     expect(Document.collection.name).to.be.equal('documents.files');
+  });
+
+  it('should be able to get gridfs bucket', () => {
+    let files = bucketFor();
+    expect(files).to.exist;
+    expect(files).to.be.an.instanceof(GridFSBucket);
+    expect(files.collectionName).to.be.equal('fs.files');
+
+    files = bucketFor('files');
+    expect(files).to.exist;
+    expect(files).to.be.an.instanceof(GridFSBucket);
+    expect(files.collectionName).to.be.equal('fs.files');
+
+    const images = bucketFor('images');
+    expect(images).to.exist;
+    expect(images).to.be.an.instanceof(GridFSBucket);
+    expect(images.collectionName).to.be.equal('images.files');
+
+    const audios = bucketFor('audios');
+    expect(audios).to.exist;
+    expect(audios).to.be.an.instanceof(GridFSBucket);
+    expect(audios.collectionName).to.be.equal('audios.files');
+
+    const videos = bucketFor('videos');
+    expect(videos).to.exist;
+    expect(videos).to.be.an.instanceof(GridFSBucket);
+    expect(videos.collectionName).to.be.equal('videos.files');
+
+    const documents = bucketFor('documents');
+    expect(documents).to.exist;
+    expect(documents).to.be.an.instanceof(GridFSBucket);
+    expect(documents.collectionName).to.be.equal('documents.files');
   });
 });

@@ -180,6 +180,7 @@ router.get(
 router.post(
   PATH_LIST,
   (request, response, next) => {
+    // const { bucket } = request.params;
     const { files } = createBuckets();
     const upload = multer({ storage: files }).single('file');
     upload(request, response, error => {
@@ -211,8 +212,8 @@ router.post(
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_CHUNKS, (request, response, next) => {
-  const { File } = createModels();
-  const { id } = request.params;
+  const { id, bucket } = request.params;
+  const File = modelForBucket(bucket);
   File.getById(id, (error, file) => {
     if (error) {
       next(error);
@@ -238,8 +239,8 @@ router.get(PATH_CHUNKS, (request, response, next) => {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_DOWNLOAD, (request, response, next) => {
-  const { File } = createModels();
-  const { id } = request.params;
+  const { id, bucket } = request.params;
+  const File = modelForBucket(bucket);
   File.getById(id, (error, file) => {
     if (error) {
       next(error);

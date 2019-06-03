@@ -175,7 +175,7 @@ export const createModels = () => {
  *
  * import { modelForBucket } from '@lykmapipo/file';
  *
- * const { Image } = modelForBucket('images');
+ * const Image = modelForBucket('images');
  *
  * Image.write({ filename }, stream, (error, file) => { ... });
  * Image.read({ _id }, (error, file) => { ... });
@@ -187,18 +187,60 @@ export const modelForBucket = bucket => {
   // create models
   const models = createModels();
 
-  // use default bucket
+  // use default bucket options
   let bucketInfo = Buckets.File;
 
-  // obtain model for specified bucket
+  // obtain options for specified bucket
   bucketInfo = find(values(Buckets), { bucketName: bucket }) || bucketInfo;
 
-  // obtain GridFS file model name
+  // obtain model name for specified bucket
   const { modelName } = bucketInfo;
 
-  // obtain GridFS file model
+  // obtain GridFS model instace for specified bucket
   const Model = get(models, modelName);
 
-  // return found GridFS model
+  // return found GridFS model instance
   return Model;
+};
+
+/**
+ * @function bucketFor
+ * @name bucketFor
+ * @description Derive GridFS instance for a given bucket name
+ * @return {GridFSBucket} valid instance of GridFSBucket
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import { bucketFor } from '@lykmapipo/file';
+ *
+ * const images = bucketFor('images');
+ *
+ * images.writeFile({ filename }, stream, (error, file) => { ... });
+ * images.readFile({ _id }, (error, file) => { ... });
+ * images.unlink(_id, (error, _id) => { ... });
+ *
+ */
+export const bucketFor = bucket => {
+  // create buckets
+  const buckets = createBuckets();
+
+  // use default bucket options
+  let bucketInfo = Buckets.File;
+
+  // obtain options for specified bucket
+  bucketInfo = find(values(Buckets), { bucketName: bucket }) || bucketInfo;
+
+  // obtain real bucket name for specified bucket
+  const { bucketName } = bucketInfo;
+
+  // obtain GridFSBucket instance
+  const Bucket = get(buckets, bucketName) || buckets.files;
+
+  // return found GridFSBucket instance
+  return Bucket;
 };
