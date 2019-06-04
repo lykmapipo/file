@@ -25,6 +25,11 @@ import { createModel, createBucket } from 'mongoose-gridfs';
 import multer from 'multer';
 import actions from 'mongoose-rest-actions';
 
+export const AUTOPOPULATE_OPTIONS = {
+  select: { filename: 1, contentType: 1, stream: 1, download: 1 },
+  maxDepth: 1,
+};
+
 /**
  * @constant Buckets
  * @name Buckets
@@ -107,11 +112,15 @@ export const bucketInfoFor = (bucket = 'fs') => {
  *
  */
 export const FileTypes = {
-  File: { type: ObjectId, ref: 'File', autopopulate: true },
-  Image: { type: ObjectId, ref: 'Image', autopopulate: true },
-  Audio: { type: ObjectId, ref: 'Audio', autopopulate: true },
-  Video: { type: ObjectId, ref: 'Video', autopopulate: true },
-  Document: { type: ObjectId, ref: 'Document', autopopulate: true },
+  File: { type: ObjectId, ref: 'File', autopopulate: AUTOPOPULATE_OPTIONS },
+  Image: { type: ObjectId, ref: 'Image', autopopulate: AUTOPOPULATE_OPTIONS },
+  Audio: { type: ObjectId, ref: 'Audio', autopopulate: AUTOPOPULATE_OPTIONS },
+  Video: { type: ObjectId, ref: 'Video', autopopulate: AUTOPOPULATE_OPTIONS },
+  Document: {
+    type: ObjectId,
+    ref: 'Document',
+    autopopulate: AUTOPOPULATE_OPTIONS,
+  },
 };
 
 /**

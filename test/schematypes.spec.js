@@ -1,50 +1,162 @@
+import { join as joinPath } from 'path';
+import { createReadStream } from 'fs';
+import { getType as mimeTypeOf } from 'mime';
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { expect, createTestModel } from '@lykmapipo/mongoose-test-helpers';
-import { FileTypes } from '../src/file.model';
+import actions from 'mongoose-rest-actions';
+import {
+  FileTypes,
+  createModels,
+  AUTOPOPULATE_OPTIONS,
+} from '../src/file.model';
 
-describe.only('SchemaTypes', () => {
-  it('should expose valid schema paths definition', () => {
-    const ChangeLog = createTestModel({
+const readStreamFor = filename => {
+  return createReadStream(joinPath(__dirname, 'fixtures', filename));
+};
+
+describe('SchemaTypes', () => {
+  let image;
+  let audio;
+  let video;
+  let doc;
+  let changelog;
+
+  const ChangeLog = createTestModel(
+    {
       image: FileTypes.Image,
       audio: FileTypes.Audio,
       video: FileTypes.Video,
       document: FileTypes.Document,
       file: FileTypes.File,
+    },
+    actions
+  );
+
+  before(done => {
+    const filename = 'image.png';
+    const contentType = mimeTypeOf('.png');
+    const options = { filename, contentType };
+    const readStream = readStreamFor(filename);
+
+    const { Image } = createModels();
+
+    Image.write(options, readStream, (error, created) => {
+      image = created;
+      done(error, created);
     });
+  });
 
-    const image = ChangeLog.path('image');
-    expect(image).to.exist;
-    expect(image).to.be.an.instanceof(ObjectId);
-    expect(image.options).to.exist;
-    expect(image.options.ref).to.be.equal('Image');
-    expect(image.options.autopopulate).to.be.true;
+  before(done => {
+    const filename = 'audio.mp3';
+    const contentType = mimeTypeOf('.mp3');
+    const options = { filename, contentType };
+    const readStream = readStreamFor(filename);
 
-    const audio = ChangeLog.path('audio');
-    expect(audio).to.exist;
-    expect(audio).to.be.an.instanceof(ObjectId);
-    expect(audio.options).to.exist;
-    expect(audio.options.ref).to.be.equal('Audio');
-    expect(audio.options.autopopulate).to.be.true;
+    const { Audio } = createModels();
 
-    const video = ChangeLog.path('video');
-    expect(video).to.exist;
-    expect(video).to.be.an.instanceof(ObjectId);
-    expect(video.options).to.exist;
-    expect(video.options.ref).to.be.equal('Video');
-    expect(video.options.autopopulate).to.be.true;
+    Audio.write(options, readStream, (error, created) => {
+      audio = created;
+      done(error, created);
+    });
+  });
 
-    const doc = ChangeLog.path('document');
-    expect(doc).to.exist;
-    expect(doc).to.be.an.instanceof(ObjectId);
-    expect(doc.options).to.exist;
-    expect(doc.options.ref).to.be.equal('Document');
-    expect(doc.options.autopopulate).to.be.true;
+  before(done => {
+    const filename = 'video.mp4';
+    const contentType = mimeTypeOf('.mp4');
+    const options = { filename, contentType };
+    const readStream = readStreamFor(filename);
 
-    const file = ChangeLog.path('file');
-    expect(file).to.exist;
-    expect(file).to.be.an.instanceof(ObjectId);
-    expect(file.options).to.exist;
-    expect(file.options.ref).to.be.equal('File');
-    expect(file.options.autopopulate).to.be.true;
+    const { Video } = createModels();
+
+    Video.write(options, readStream, (error, created) => {
+      video = created;
+      done(error, created);
+    });
+  });
+
+  before(done => {
+    const filename = 'document.doc';
+    const contentType = mimeTypeOf('.doc');
+    const options = { filename, contentType };
+    const readStream = readStreamFor(filename);
+
+    const { Document } = createModels();
+
+    Document.write(options, readStream, (error, created) => {
+      doc = created;
+      done(error, created);
+    });
+  });
+
+  it('should expose valid schema paths definition', () => {
+    const imagePath = ChangeLog.path('image');
+    expect(imagePath).to.exist;
+    expect(imagePath).to.be.an.instanceof(ObjectId);
+    expect(imagePath.options).to.exist;
+    expect(imagePath.options.ref).to.be.equal('Image');
+    expect(imagePath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
+
+    const audioPath = ChangeLog.path('audio');
+    expect(audioPath).to.exist;
+    expect(audioPath).to.be.an.instanceof(ObjectId);
+    expect(audioPath.options).to.exist;
+    expect(audioPath.options.ref).to.be.equal('Audio');
+    expect(audioPath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
+
+    const videoPath = ChangeLog.path('video');
+    expect(videoPath).to.exist;
+    expect(videoPath).to.be.an.instanceof(ObjectId);
+    expect(videoPath.options).to.exist;
+    expect(videoPath.options.ref).to.be.equal('Video');
+    expect(videoPath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
+
+    const documentPath = ChangeLog.path('document');
+    expect(documentPath).to.exist;
+    expect(documentPath).to.be.an.instanceof(ObjectId);
+    expect(documentPath.options).to.exist;
+    expect(documentPath.options.ref).to.be.equal('Document');
+    expect(documentPath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
+
+    const filePath = ChangeLog.path('file');
+    expect(filePath).to.exist;
+    expect(filePath).to.be.an.instanceof(ObjectId);
+    expect(filePath.options).to.exist;
+    expect(filePath.options.ref).to.be.equal('File');
+    expect(filePath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
+  });
+
+  it('should be able to create with files', done => {
+    changelog = ChangeLog.fake();
+    changelog.set({ image, audio, video, document: doc });
+
+    ChangeLog.create(changelog, (error, created) => {
+      expect(error).to.not.exist;
+      expect(created).to.exist;
+      expect(created.image).to.exist;
+      expect(created.image._id).to.exist.and.be.eql(image._id);
+      expect(created.audio).to.exist;
+      expect(created.audio._id).to.exist.and.be.eql(audio._id);
+      expect(created.video).to.exist;
+      expect(created.video._id).to.exist.and.be.eql(video._id);
+      expect(created.document).to.exist;
+      expect(created.document._id).to.exist.and.be.eql(doc._id);
+      done(error, created);
+    });
+  });
+
+  it('should find and populate files paths', done => {
+    ChangeLog.findById(changelog._id, (error, found) => {
+      expect(error).to.not.exist;
+      expect(found).to.exist;
+      expect(found.image).to.exist;
+      expect(found.image._id).to.exist.and.be.eql(image._id);
+      expect(found.audio).to.exist;
+      expect(found.audio._id).to.exist.and.be.eql(audio._id);
+      expect(found.video).to.exist;
+      expect(found.video._id).to.exist.and.be.eql(video._id);
+      expect(found.document).to.exist;
+      expect(found.document._id).to.exist.and.be.eql(doc._id);
+      done(error, found);
+    });
   });
 });
