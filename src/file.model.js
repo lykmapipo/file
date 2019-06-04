@@ -18,9 +18,9 @@
  * File.wite({ filename }, in, (error, file) => { ... });
  *
  */
-import { find, get, values, set } from 'lodash';
-import { mergeObjects } from '@lykmapipo/common';
-import { ObjectId } from '@lykmapipo/mongoose-common';
+import { find, forEach, get, values, set } from 'lodash';
+import { mergeObjects, uniq } from '@lykmapipo/common';
+import { ObjectId, validationErrorFor } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
 import multer from 'multer';
 import actions from 'mongoose-rest-actions';
@@ -320,6 +320,87 @@ export const fileFilterFor = (bucket = 'fs') => {
 
   // return bucket file filter
   return fileFilter;
+};
+
+/**
+ * @function bucketUploaderFor
+ * @name bucketUploaderFor
+ * @description Derive multer uploader for a given bucket name
+ * @return {Object} uploader Derived bucket uploader details
+ * @return {Model} uploader.File valid file model for the bucket
+ * @return {String} uploader.fieldName expected file field name on the request
+ * @return {Function} uploader.upload valid multer file uploader
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import multer from 'multer';
+ * import { bucketUploaderFor } from '@lykmapipo/file';
+ *
+ * const { upload }= bucketUploaderFor('images');
+ * upload(request, response, error => { ... });
+ *
+ */
+export const bucketUploaderFor = (bucket = 'fs') => {
+  // obtain bucket options
+  const { fieldName, bucketName } = bucketInfoFor(bucket);
+
+  // obtain GridFSBucket storage
+  const storage = bucketFor(bucketName);
+
+  // obtain model for the bucket
+  const File = modelFor(bucketName);
+
+  // const file filter
+  const fileFilter = fileFilterFor(bucketName);
+
+  // create multer file uploader
+  const upload = multer({ storage, fileFilter }).any();
+
+  // return multer upload handler with bucket info
+  return { fieldName, bucketName, upload, File };
+};
+
+/**
+ * @function uploadErrorFor
+ * @name uploadErrorFor
+ * @description Derive upload validation error for a given paths.
+ * @return {...String} path list of required field names not found while upload
+ * @return {ValidationError} valid mongoose validation error
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import { uploadErrorFor } from '@lykmapipo/file';
+ *
+ * const uploadError = uploadErrorFor('image');
+ * //=> { name: 'ValidationError', ... }
+ *
+ */
+export const uploadErrorFor = (...path) => {
+  // prepare required paths validator options
+  const paths = {};
+  forEach(uniq([...path]), pathName => {
+    paths[pathName] = {
+      type: 'required',
+      path: pathName,
+      value: undefined,
+      reason: 'Not provided',
+      message: 'Path `{PATH}` is required.',
+    };
+  });
+
+  // build and return validation error
+  const error = validationErrorFor({ paths });
+  return error;
 };
 
 export const uploaderFor = (/* ...bucket */) => (request, response, next) => {

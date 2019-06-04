@@ -66,6 +66,32 @@ describe('HTTP API', () => {
       });
   });
 
+  it('should throw when HTTP POST on /files/:bucket with no file', done => {
+    const upload = {
+      bucket: 'files',
+      aliases: faker.random.word(),
+    };
+    const { testUpload } = testRouter(options, fileRouter);
+    testUpload(upload)
+      .expect('Content-Type', /json/)
+      .expect(400, (error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body.code).to.be.equal(400);
+        expect(body.status).to.be.equal(400);
+        expect(body.name).to.be.equal('ValidationError');
+        expect(body.message).to.be.equal('Validation failed');
+        expect(body.description).to.be.equal('Validation failed');
+        expect(body.errors.file.message).to.be.equal(
+          'Path `file` is required.'
+        );
+        expect(body.errors.file.name).to.be.equal('ValidatorError');
+        expect(body.errors.file.type).to.be.equal('required');
+        expect(body.errors.file.kind).to.be.equal('required');
+        expect(body.errors.file.path).to.be.equal('file');
+        done(error, body);
+      });
+  });
+
   it('should handle HTTP GET on /files/:bucket', done => {
     const { testGet } = testRouter(options, fileRouter);
     const params = { bucket: 'files' };

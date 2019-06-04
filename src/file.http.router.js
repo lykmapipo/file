@@ -104,7 +104,7 @@
  */
 
 /* dependencies */
-import { get, omit } from 'lodash';
+import { first, get, isEmpty, omit } from 'lodash';
 import { getString } from '@lykmapipo/env';
 import {
   getFor,
@@ -115,7 +115,7 @@ import {
   deleteFor,
   Router,
 } from '@lykmapipo/express-rest-actions';
-import { modelFor, uploaderFor } from './file.model';
+import { modelFor, bucketUploaderFor, uploadErrorFor } from './file.model';
 
 /* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -189,8 +189,26 @@ router.get(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.post(PATH_LIST, uploaderFor(), (request, response) => {
-  response.created(request.file);
+router.post(PATH_LIST, (request, response, next) => {
+  // prepare bucket upload hanlder
+  const { bucket = 'fs' } = request.params;
+  const { upload, fieldName, File } = bucketUploaderFor(bucket);
+
+  // handle bucket file upload
+  upload(request, response, error => {
+    // backoff on error
+    if (error) {
+      return next(error);
+    }
+    // handle file validation error
+    if (isEmpty(request.files)) {
+      const uploadError = uploadErrorFor(fieldName);
+      return next(uploadError);
+    }
+    // build response
+    const file = new File(first(request.files));
+    return response.created(file);
+  });
 });
 
 /**
@@ -212,11 +230,10 @@ router.get(PATH_CHUNKS, (request, response, next) => {
   const File = modelFor(bucket);
   File.getById(id, (error, file) => {
     if (error) {
-      next(error);
-    } else {
-      response.type(file.contentType);
-      file.read().pipe(response);
+      return next(error);
     }
+    response.type(file.contentType);
+    return file.read().pipe(response);
   });
 });
 
@@ -239,11 +256,10 @@ router.get(PATH_DOWNLOAD, (request, response, next) => {
   const File = modelFor(bucket);
   File.getById(id, (error, file) => {
     if (error) {
-      next(error);
-    } else {
-      response.attachment(file.filename);
-      file.read().pipe(response);
+      return next(error);
     }
+    response.attachment(file.filename);
+    return file.read().pipe(response);
   });
 });
 
