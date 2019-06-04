@@ -8,6 +8,7 @@ import {
   createBuckets,
   modelFor,
   bucketFor,
+  fileFilterFor,
 } from '../src/file.model';
 
 describe('Index', () => {
@@ -256,5 +257,41 @@ describe('Index', () => {
     expect(documents).to.exist;
     expect(documents).to.be.an.instanceof(GridFSBucket);
     expect(documents.collectionName).to.be.equal('documents.files');
+  });
+
+  it('should filter allowed file for a default bucket', done => {
+    const fileFilter = fileFilterFor();
+    fileFilter({}, { fieldname: 'file' }, (error, isAllowed) => {
+      expect(error).to.not.exist;
+      expect(isAllowed).to.exist.and.be.true;
+      done(error, isAllowed);
+    });
+  });
+
+  it('should filter reject file for a default bucket', done => {
+    const fileFilter = fileFilterFor();
+    fileFilter({}, { fieldname: 'any' }, (error, isAllowed) => {
+      expect(error).to.not.exist;
+      expect(isAllowed).to.exist.and.be.false;
+      done(error, isAllowed);
+    });
+  });
+
+  it('should filter allowed file for a specified bucket', done => {
+    const fileFilter = fileFilterFor('images');
+    fileFilter({}, { fieldname: 'image' }, (error, isAllowed) => {
+      expect(error).to.not.exist;
+      expect(isAllowed).to.exist.and.be.true;
+      done(error, isAllowed);
+    });
+  });
+
+  it('should filter reject file for a specified bucket', done => {
+    const fileFilter = fileFilterFor('images');
+    fileFilter({}, { fieldname: 'any' }, (error, isAllowed) => {
+      expect(error).to.not.exist;
+      expect(isAllowed).to.exist.and.be.false;
+      done(error, isAllowed);
+    });
   });
 });

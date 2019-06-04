@@ -266,6 +266,20 @@ export const bucketFor = (bucket = 'fs') => {
   return Bucket;
 };
 
+export const fileFilterFor = (bucket = 'fs') => {
+  // obtain bucket field name
+  const { fieldName } = bucketInfoFor(bucket);
+
+  // construct file filter
+  const fileFilter = (request, file, cb) => {
+    const isAllowed = file && file.fieldname === fieldName;
+    cb(null, isAllowed);
+  };
+
+  // return bucket file filter
+  return fileFilter;
+};
+
 export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   // obtain bucket name
   const { bucket = 'fs' } = request.params;
@@ -280,10 +294,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   const File = modelFor(bucketName);
 
   // const file filter
-  const fileFilter = (req, file, cb) => {
-    const isAllowed = file && file.fieldname === fieldName;
-    cb(null, isAllowed);
-  };
+  const fileFilter = fileFilterFor(bucketName);
 
   // create multer uploader
   const upload = multer({ storage, fileFilter }).any();
