@@ -40,19 +40,46 @@ import actions from 'mongoose-rest-actions';
  * @example
  *
  * import { Buckets } from '@lykmapipo/file';
- * Buckets.File; //=> { modelName: 'File', bucketName: 'fs' }
+ * Buckets.File; //=> { modelName: 'File', bucketName: 'fs', field:'file' }
  *
  */
 export const Buckets = {
-  File: { modelName: 'File', bucketName: 'fs', field: 'file' },
-  Image: { modelName: 'Image', bucketName: 'images', field: 'image' },
-  Audio: { modelName: 'Audio', bucketName: 'audios', field: 'audio' },
-  Video: { modelName: 'Video', bucketName: 'videos', field: 'video' },
+  File: { modelName: 'File', bucketName: 'fs', fieldName: 'file' },
+  Image: { modelName: 'Image', bucketName: 'images', fieldName: 'image' },
+  Audio: { modelName: 'Audio', bucketName: 'audios', fieldName: 'audio' },
+  Video: { modelName: 'Video', bucketName: 'videos', fieldName: 'video' },
   Document: {
     modelName: 'Document',
     bucketName: 'documents',
-    field: 'document',
+    fieldName: 'document',
   },
+};
+
+/**
+ * @constant bucketInfoFor
+ * @name bucketInfoFor
+ * @descriptions Obtain bucket information of a specified bucket name.
+ * @param {String} [bucket='fs'] Valid bucket name
+ * @return {Object} Valid bucket information
+ * @author lally elias <lallyelias87@gmail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @public
+ * @static
+ * @example
+ *
+ * import { bucketInfoFor } from '@lykmapipo/file';
+ * const bucketInfo = bucketInfoFor('fs');
+ * //=> { modelName: 'File', bucketName: 'fs', field: 'file' }
+ *
+ */
+export const bucketInfoFor = (bucket = 'fs') => {
+  // obtain bucket info or default
+  const info = find(values(Buckets), { bucketName: bucket }) || Buckets.File;
+
+  // return bucket info copy
+  return mergeObjects(info);
 };
 
 /**
@@ -248,7 +275,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   const { bucket = 'fs' } = request.params;
 
   // obtain bucket options
-  const { field, bucketName } =
+  const { fieldName, bucketName } =
     find(values(Buckets), { bucketName: bucket }) || Buckets.File;
 
   // obtain GridFSBucket storage
@@ -259,7 +286,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
 
   // const file filter
   const fileFilter = (req, file, cb) => {
-    const isAllowed = file && file.fieldname === field;
+    const isAllowed = file && file.fieldname === fieldName;
     cb(null, isAllowed);
   };
 
@@ -283,7 +310,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
 
       // set file to body
       const body = mergeObjects(request.body);
-      set(body, field, file);
+      set(body, fieldName, file);
       request.body = body;
 
       // continue

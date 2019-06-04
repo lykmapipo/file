@@ -2,6 +2,7 @@ import { ObjectId, GridFSBucket } from '@lykmapipo/mongoose-common';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
 import {
   Buckets,
+  bucketInfoFor,
   FileTypes,
   createModels,
   createBuckets,
@@ -17,35 +18,85 @@ describe('Index', () => {
     expect(Buckets.File).to.be.eql({
       modelName: 'File',
       bucketName: 'fs',
-      field: 'file',
+      fieldName: 'file',
     });
 
     expect(Buckets.Image).to.exist;
     expect(Buckets.Image).to.be.eql({
       modelName: 'Image',
       bucketName: 'images',
-      field: 'image',
+      fieldName: 'image',
     });
 
     expect(Buckets.Audio).to.exist;
     expect(Buckets.Audio).to.be.eql({
       modelName: 'Audio',
       bucketName: 'audios',
-      field: 'audio',
+      fieldName: 'audio',
     });
 
     expect(Buckets.Video).to.exist;
     expect(Buckets.Video).to.be.eql({
       modelName: 'Video',
       bucketName: 'videos',
-      field: 'video',
+      fieldName: 'video',
     });
 
     expect(Buckets.Document).to.exist;
     expect(Buckets.Document).to.be.eql({
       modelName: 'Document',
       bucketName: 'documents',
-      field: 'document',
+      fieldName: 'document',
+    });
+  });
+
+  it('should be able to get bucket info', () => {
+    let bucketInfo = bucketInfoFor();
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'File',
+      bucketName: 'fs',
+      fieldName: 'file',
+    });
+
+    bucketInfo = bucketInfoFor('fs');
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'File',
+      bucketName: 'fs',
+      fieldName: 'file',
+    });
+
+    bucketInfo = bucketInfoFor('images');
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'Image',
+      bucketName: 'images',
+      fieldName: 'image',
+    });
+
+    bucketInfo = bucketInfoFor('audios');
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'Audio',
+      bucketName: 'audios',
+      fieldName: 'audio',
+    });
+
+    bucketInfo = bucketInfoFor('videos');
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'Video',
+      bucketName: 'videos',
+      fieldName: 'video',
+    });
+
+    bucketInfo = bucketInfoFor('documents');
+    expect(bucketInfo).to.exist;
+    expect(bucketInfo).to.be.eql({
+      modelName: 'Document',
+      bucketName: 'documents',
+      fieldName: 'document',
     });
   });
 
