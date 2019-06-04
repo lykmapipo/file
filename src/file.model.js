@@ -156,7 +156,7 @@ export const createBuckets = () => {
 /**
  * @function createModels
  * @name createModels
- * @description Create common file models
+ * @description Create common GridFS file models
  * @return {Object} Models valid mongoose models
  * @return {Model} Models.File valid File mongoose model
  * @return {Model} Models.Image valid Image mongoose model
@@ -182,7 +182,7 @@ export const createBuckets = () => {
  *
  */
 export const createModels = () => {
-  // schema plugin for stream and download urls
+  // schema plugin for file stream and download urls
   const urlsFor = bucketInfo => schema => {
     // obtain bucket name
     const { bucketName } = bucketInfo;
@@ -288,6 +288,26 @@ export const bucketFor = (bucket = 'fs') => {
   return Bucket;
 };
 
+/**
+ * @function fileFilterFor
+ * @name fileFilterFor
+ * @description Derive multer file filter for a given bucket name
+ * @return {Function} valid multer file filter
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import multer from 'multer';
+ * import { fileFilterFor } from '@lykmapipo/file';
+ *
+ * const fileFilter = fileFilterFor('images');
+ * const uploader = multer({ fileFilter }).any();
+ *
+ */
 export const fileFilterFor = (bucket = 'fs') => {
   // obtain bucket field name
   const { fieldName } = bucketInfoFor(bucket);
