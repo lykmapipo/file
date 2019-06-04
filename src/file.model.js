@@ -19,8 +19,6 @@
  *
  */
 import { find, get, values, set } from 'lodash';
-// import { parallel } from 'async';
-// import { compact, mergeObjects } from '@lykmapipo/common';
 import { mergeObjects } from '@lykmapipo/common';
 import { ObjectId } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
