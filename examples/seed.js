@@ -21,6 +21,9 @@ connect(error => {
   // models
   const { File, Image, Audio, Video, Document } = createModels();
 
+  // prepare clear
+  const clearAll = next => clear(error => next(error));
+
   // prepare generic file seed
   const seedFile = next => {
     const filename = 'file.txt';
@@ -67,7 +70,10 @@ connect(error => {
   }
 
   // do seeding
-  const seeds = [seedFile, seedImage, seedAudio, seedVideo, seedDocument];
+  const seeds = [
+    clearAll, seedFile, seedImage,
+    seedAudio, seedVideo, seedDocument
+  ];
   parallel(seeds, error => {
     // re-throw if error
     if (error) {
