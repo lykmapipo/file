@@ -23,6 +23,10 @@
  * @apiSuccess {String[]} [aliases] An array of alias strings for the file.
  * @apiSuccess {Object} [metadata] The metadata field may be of any data type
  * and can hold any additional information you want to store.
+ * @apiSuccess {String} stream A valid url relative to base url used
+ * for streaming a file.
+ * @apiSuccess {String} download A valid url relative to base url used
+ * for downloading a file.
  *
  */
 
@@ -34,10 +38,15 @@
  * @apiSuccess {Date} data.uploadDate The date the file was first stored.
  * @apiSuccess {String} data.md5 md5 file digest.
  * @apiSuccess {String} data.filename A human-readable file name.
+ * @apiSuccess {String} data.filename A human-readable file name.
  * @apiSuccess {String} data.contentType A valid MIME type for the file.
  * @apiSuccess {String[]} [data.aliases] An array of alias strings for the file.
  * @apiSuccess {Object} [data.metadata] The metadata field may be of any data
  * type and can hold any additional information you want to store.
+ * @apiSuccess {String} stream A valid url relative to base url used
+ * for streaming a file.
+ * @apiSuccess {String} download A valid url relative to base url used
+ * for downloading a file.
  * @apiSuccess {Number} total Total number of file
  * @apiSuccess {Number} size Number of files returned
  * @apiSuccess {Number} limit Query limit used
@@ -61,6 +70,8 @@
  *  "filename": "file.txt",
  *  "contentType": "text/plain"
  *  "aliases": ["notes"],
+ *  "stream": "/files/documents/5cf6432dc3c6b6117efee74f/chunks",
+ *  "download": "/files/documents/5cf6432dc3c6b6117efee74f/download"
  * }
  *
  */
@@ -78,6 +89,8 @@
  *    "filename": "file.txt",
  *    "contentType": "text/plain"
  *    "aliases": ["notes"],
+ *    "stream": "/files/documents/5cf6432dc3c6b6117efee74f/chunks",
+ *    "download": "/files/documents/5cf6432dc3c6b6117efee74f/download"
  *   }],
  *   "total": 20,
  *   "size": 10,

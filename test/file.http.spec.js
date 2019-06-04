@@ -59,6 +59,8 @@ describe('HTTP API', () => {
         expect(body.chunkSize).to.exist;
         expect(body.uploadDate).to.exist;
         expect(body.md5).to.exist;
+        expect(body.stream).to.exist;
+        expect(body.download).to.exist;
         file = body;
         done(error, body);
       });

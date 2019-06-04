@@ -31,6 +31,8 @@ describe('Image', () => {
       expect(created.chunkSize).to.exist;
       expect(created.uploadDate).to.exist;
       expect(created.md5).to.exist;
+      expect(created.stream).to.exist;
+      expect(created.download).to.exist;
       image = created;
       done(error, created);
     });

@@ -182,12 +182,34 @@ export const createBuckets = () => {
  *
  */
 export const createModels = () => {
+  // schema plugin for stream and download urls
+  const urlsFor = bucketInfo => schema => {
+    // obtain bucket name
+    const { bucketName } = bucketInfo;
+
+    // plugin stream url
+    schema.virtual('stream').get(function stream() {
+      const id = get(this, '_id');
+      return `/files/${bucketName}/${id}/chunks`;
+    });
+
+    // plugin download url
+    schema.virtual('download').get(function download() {
+      const id = get(this, '_id');
+      return `/files/${bucketName}/${id}/download`;
+    });
+  };
+
   // create common file models
-  const File = createModel(Buckets.File, actions);
-  const Image = createModel(Buckets.Image, actions);
-  const Audio = createModel(Buckets.Audio, actions);
-  const Video = createModel(Buckets.Video, actions);
-  const Document = createModel(Buckets.Document, actions);
+  const File = createModel(Buckets.File, urlsFor(Buckets.File), actions);
+  const Image = createModel(Buckets.Image, urlsFor(Buckets.Image), actions);
+  const Audio = createModel(Buckets.Audio, urlsFor(Buckets.Audio), actions);
+  const Video = createModel(Buckets.Video, urlsFor(Buckets.Video), actions);
+  const Document = createModel(
+    Buckets.Document,
+    urlsFor(Buckets.Document),
+    actions
+  );
 
   // return file models
   return { File, Image, Audio, Video, Document };
