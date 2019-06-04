@@ -34,7 +34,7 @@ const options = {
   pathStream: '/files/:bucket/:id/chunks',
 };
 
-describe('File HTTP API', () => {
+describe('Audio HTTP API', () => {
   before(() => clearHttp());
   before(done => clearDatabase(done));
 
@@ -42,9 +42,9 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP POST on /files/:bucket', done => {
     const upload = {
-      bucket: 'files',
+      bucket: 'audios',
       aliases: faker.random.word(),
-      attach: { file: `${__dirname}/fixtures/file.txt` },
+      attach: { audio: `${__dirname}/fixtures/audio.mp3` },
     };
     const { testUpload } = testRouter(options, fileRouter);
     testUpload(upload)
@@ -68,7 +68,7 @@ describe('File HTTP API', () => {
 
   it('should throw when HTTP POST on /files/:bucket with no file', done => {
     const upload = {
-      bucket: 'files',
+      bucket: 'audios',
       aliases: faker.random.word(),
     };
     const { testUpload } = testRouter(options, fileRouter);
@@ -81,20 +81,20 @@ describe('File HTTP API', () => {
         expect(body.name).to.be.equal('ValidationError');
         expect(body.message).to.be.equal('Validation failed');
         expect(body.description).to.be.equal('Validation failed');
-        expect(body.errors.file.message).to.be.equal(
-          'Path `file` is required.'
+        expect(body.errors.audio.message).to.be.equal(
+          'Path `audio` is required.'
         );
-        expect(body.errors.file.name).to.be.equal('ValidatorError');
-        expect(body.errors.file.type).to.be.equal('required');
-        expect(body.errors.file.kind).to.be.equal('required');
-        expect(body.errors.file.path).to.be.equal('file');
+        expect(body.errors.audio.name).to.be.equal('ValidatorError');
+        expect(body.errors.audio.type).to.be.equal('required');
+        expect(body.errors.audio.kind).to.be.equal('required');
+        expect(body.errors.audio.path).to.be.equal('audio');
         done(error, body);
       });
   });
 
   it('should handle HTTP GET on /files/:bucket', done => {
     const { testGet } = testRouter(options, fileRouter);
-    const params = { bucket: 'files' };
+    const params = { bucket: 'audios' };
     testGet(params)
       .expect('Content-Type', /json/)
       .expect(200, (error, { body }) => {
@@ -120,7 +120,7 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP GET on /files/:bucket/schema', done => {
     const { testGetSchema } = testRouter(options, fileRouter);
-    testGetSchema({ bucket: 'files' }).expect(200, (error, { body }) => {
+    testGetSchema({ bucket: 'audios' }).expect(200, (error, { body }) => {
       expect(error).to.not.exist;
       expect(body).to.exist;
       expect(body).to.have.all.keys('title', 'type', 'properties');
@@ -131,7 +131,7 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP GET on /files/:bucket/:id', done => {
     const { testGet } = testRouter(options, fileRouter);
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testGet(params)
       .expect('Content-Type', /json/)
       .expect(200, (error, { body }) => {
@@ -150,9 +150,9 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP GET on /files/:bucket/:id/chunks', done => {
     const { testStream } = testRouter(options, fileRouter);
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testStream(params)
-      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Type', 'audio/mpeg')
       .expect(200, (error, response) => {
         expect(error).to.not.exist;
         expect(response).to.exist;
@@ -162,10 +162,10 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP GET on /files/:bucket/:id/download', done => {
     const { testDownload } = testRouter(options, fileRouter);
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testDownload(params)
-      .expect('Content-Type', 'text/plain; charset=utf-8')
-      .expect('Content-Disposition', 'attachment; filename="file.txt"')
+      .expect('Content-Type', 'audio/mpeg')
+      .expect('Content-Disposition', 'attachment; filename="audio.mp3"')
       .expect(200, (error, response) => {
         expect(error).to.not.exist;
         expect(response).to.exist;
@@ -176,7 +176,7 @@ describe('File HTTP API', () => {
   it('should handle HTTP PATCH on /files/:bucket/:id', done => {
     const { testPatch } = testRouter(options, fileRouter);
     const updates = { metadata: { owner: faker.name.findName() } };
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testPatch(params, updates)
       .expect('Content-Type', /json/)
       .expect(200, (error, { body }) => {
@@ -198,7 +198,7 @@ describe('File HTTP API', () => {
   it('should handle HTTP PUT on /files/:bucket/:id', done => {
     const { testPut } = testRouter(options, fileRouter);
     const updates = { metadata: { owner: faker.name.findName() } };
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testPut(params, updates)
       .expect('Content-Type', /json/)
       .expect(200, (error, { body }) => {
@@ -219,7 +219,7 @@ describe('File HTTP API', () => {
 
   it('should handle HTTP DELETE on /files/:bucket/:id', done => {
     const { testDelete } = testRouter(options, fileRouter);
-    const params = { bucket: 'files', id: file._id };
+    const params = { bucket: 'audios', id: file._id };
     testDelete(params)
       .expect('Content-Type', /json/)
       .expect(200, (error, { body }) => {
