@@ -191,18 +191,13 @@ export const createModels = () => {
  * Image.find((error, files) => { ... });
  *
  */
-export const modelFor = bucket => {
+export const modelFor = (bucket = 'fs') => {
   // create models
   const models = createModels();
 
-  // use default bucket options
-  let bucketInfo = Buckets.File;
-
-  // obtain options for specified bucket
-  bucketInfo = find(values(Buckets), { bucketName: bucket }) || bucketInfo;
-
   // obtain model name for specified bucket
-  const { modelName } = bucketInfo;
+  const { modelName } =
+    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
 
   // obtain GridFS model instace for specified bucket
   const Model = get(models, modelName);
@@ -233,18 +228,13 @@ export const modelFor = bucket => {
  * images.unlink(_id, (error, _id) => { ... });
  *
  */
-export const bucketFor = bucket => {
+export const bucketFor = (bucket = 'fs') => {
   // create buckets
   const buckets = createBuckets();
 
-  // use default bucket options
-  let bucketInfo = Buckets.File;
-
   // obtain options for specified bucket
-  bucketInfo = find(values(Buckets), { bucketName: bucket }) || bucketInfo;
-
-  // obtain real bucket name for specified bucket
-  const { bucketName } = bucketInfo;
+  const { bucketName } =
+    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
 
   // obtain GridFSBucket instance
   const Bucket = get(buckets, bucketName) || buckets.files;
@@ -259,7 +249,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
 
   // obtain bucket options
   const { field, bucketName } =
-    find(Buckets, { bucketName: bucket }) || Buckets.File;
+    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
 
   // obtain GridFSBucket storage
   const storage = bucketFor(bucketName);
@@ -267,8 +257,14 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   // obtain model for the bucket
   const File = modelFor(bucketName);
 
+  // const file filter
+  const fileFilter = (req, file, cb) => {
+    const isAllowed = file && file.fieldname === field;
+    cb(null, isAllowed);
+  };
+
   // create multer uploader
-  const upload = multer({ storage }).single(field);
+  const upload = multer({ storage, fileFilter }).any();
 
   // do upload
   upload(request, response, error => {
@@ -278,9 +274,9 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
     }
 
     // extend request with file instance
-    if (request.file && request.file.fieldname === field) {
+    if (request.files) {
       // create file instance
-      const file = new File(request.file);
+      const file = new File(request.files[0]);
 
       // set file to request
       request.file = file;
