@@ -36,11 +36,6 @@ mount(fileRouter);
 start(error => { ... });
 ```
 
-## Environment
-```js
-FILE_BUCKETS=File,Image,Audio,Video
-```
-
 ## Testing
 
 - Clone this repository
