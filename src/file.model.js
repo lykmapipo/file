@@ -223,8 +223,7 @@ export const modelFor = (bucket = 'fs') => {
   const models = createModels();
 
   // obtain model name for specified bucket
-  const { modelName } =
-    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
+  const { modelName } = bucketInfoFor(bucket);
 
   // obtain GridFS model instace for specified bucket
   const Model = get(models, modelName);
@@ -260,8 +259,7 @@ export const bucketFor = (bucket = 'fs') => {
   const buckets = createBuckets();
 
   // obtain options for specified bucket
-  const { bucketName } =
-    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
+  const { bucketName } = bucketInfoFor(bucket);
 
   // obtain GridFSBucket instance
   const Bucket = get(buckets, bucketName) || buckets.files;
@@ -275,8 +273,7 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   const { bucket = 'fs' } = request.params;
 
   // obtain bucket options
-  const { fieldName, bucketName } =
-    find(values(Buckets), { bucketName: bucket }) || Buckets.File;
+  const { fieldName, bucketName } = bucketInfoFor(bucket);
 
   // obtain GridFSBucket storage
   const storage = bucketFor(bucketName);
