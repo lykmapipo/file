@@ -4,7 +4,7 @@
 const { createReadStream } = require('fs');
 const { parallel } = require('async');
 const { getType: mimeTypeOf } = require('mime');
-const { connect } = require('@lykmapipo/mongoose-common');
+const { connect, clear } = require('@lykmapipo/mongoose-common');
 const { createModels } = require(`${__dirname}/..`);
 
 const readStreamFor = filename => {
