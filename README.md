@@ -24,7 +24,7 @@ npm install @lykmapipo/file --save
 ```js
 const { connect } = require('@lykmapipo/mongoose-common');
 const { start, mount } = require('@lykmapipo/express-common');
-const { File, fileRouter } = require('@lykmapipo/file');
+const { fileRouter } = require('@lykmapipo/file');
 
 // connect to mongodb
 connect(process.env.MONGODB_URI, error => { ... });
@@ -43,19 +43,24 @@ start(error => { ... });
 - Install all development dependencies
 
 ```sh
-npm install
+$ npm install
 ```
 
 - Run example
 
 ```sh
-npm run dev
+$ npm run dev
+$ curl -F 'image=@./test/fixtures/image.png' http://0.0.0.0:5000/v1/files/images
+$ curl -F 'audio=@./test/fixtures/audio.mp3' http://0.0.0.0:5000/v1/files/audios
+$ curl -F 'video=@./test/fixtures/video.mp3' http://0.0.0.0:5000/v1/files/videos
+$ curl -F 'document=@./test/fixtures/document.doc' http://0.0.0.0:5000/v1/files/documents
+$ curl -F 'file=@./test/fixtures/file.txt' http://0.0.0.0:5000/v1/files/files
 ```
 
 - Then run test
 
 ```sh
-npm test
+$ npm test
 ```
 
 ## Contribute
