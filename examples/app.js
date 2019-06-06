@@ -3,8 +3,8 @@
 /* dependencies */
 const _ = require('lodash');
 const { connect } = require('@lykmapipo/mongoose-common');
-const { get, mount, start } = require('@lykmapipo/express-common');
-const { apiVersion, fileRouter } = require(`${__dirname}/..`);
+const { get, mount, post, start } = require('@lykmapipo/express-common');
+const { apiVersion, fileRouter, uploaderFor } = require(`${__dirname}/..`);
 
 // establish mongodb connection
 connect(error => {
@@ -22,6 +22,14 @@ connect(error => {
   // mount file router
   mount(fileRouter);
 
+  // handle uploads in custom paths
+  post('/v1/changelogs', uploaderFor(), (request, response, next) => {
+    if (error) {
+      return next(error);
+    }
+    response.created(request.body);
+  });
+
   // fire the app
   start((error, env) => {
     // re-throw if error
@@ -35,5 +43,4 @@ connect(error => {
       console.log(`visit http://0.0.0.0:${env.PORT}/${apiVersion}/${path}`);
     });
   });
-  
 });
