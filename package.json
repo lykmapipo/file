@@ -83,18 +83,19 @@
     "eslint-plugin-mocha": "^5.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "generate-changelog": "^1.7.1",
-    "husky": "^2.3.0",
+    "handlebars": "^4.1.2",
+    "husky": "^2.4.0",
     "is-stream": "^2.0.0",
-    "lint-staged": "^8.1.7",
+    "lint-staged": "^8.2.0",
     "mocha": "^6.1.4",
-    "mongoose": ">=5.5.12",
+    "mongoose": ">=5.5.13",
     "npm-check-updates": "^3.1.10",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
-    "rollup": "^1.13.1"
+    "rollup": "^1.14.2"
   },
   "peerDependencies": {
-    "mongoose": ">=5.5.12"
+    "mongoose": ">=5.5.13"
   },
   "dependencies": {
     "@lykmapipo/common": ">=0.19.1",
@@ -102,7 +103,7 @@
     "@lykmapipo/express-common": ">=0.17.4",
     "@lykmapipo/express-rest-actions": ">=0.6.1",
     "@lykmapipo/mongoose-common": ">=0.24.0",
-    "@lykmapipo/multer": "^1.5.0",
+    "@lykmapipo/multer": ">=1.5.0",
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
     "mime": ">=2.4.3",
