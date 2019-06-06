@@ -24,6 +24,8 @@ import {
   createModels,
   modelFor,
   bucketFor,
+  uploadErrorFor,
+  uploaderFor,
 } from './file.model';
 import fileRouter from './file.http.router';
 
@@ -49,6 +51,8 @@ export {
   createModels,
   modelFor,
   bucketFor,
+  uploadErrorFor,
+  uploaderFor,
   fileRouter,
   start,
 };
