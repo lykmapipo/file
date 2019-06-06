@@ -18,11 +18,11 @@
  * File.wite({ filename }, in, (error, file) => { ... });
  *
  */
-import { find, forEach, get, values, set } from 'lodash';
+import { find, forEach, get, isEmpty, values } from 'lodash';
 import { mergeObjects, uniq } from '@lykmapipo/common';
 import { ObjectId, validationErrorFor } from '@lykmapipo/mongoose-common';
 import { createModel, createBucket } from 'mongoose-gridfs';
-import multer from 'multer';
+import multer from '@lykmapipo/multer';
 import actions from 'mongoose-rest-actions';
 
 export const AUTOPOPULATE_OPTIONS = {
@@ -332,49 +332,6 @@ export const fileFilterFor = (bucket = 'fs') => {
 };
 
 /**
- * @function bucketUploaderFor
- * @name bucketUploaderFor
- * @description Derive multer uploader for a given bucket name
- * @return {Object} uploader Derived bucket uploader details
- * @return {Model} uploader.File valid file model for the bucket
- * @return {String} uploader.fieldName expected file field name on the request
- * @return {Function} uploader.upload valid multer file uploader
- * @author lally elias <lallyelias87@mail.com>
- * @license MIT
- * @since 0.1.0
- * @version 0.1.0
- * @static
- * @public
- * @example
- *
- * import multer from 'multer';
- * import { bucketUploaderFor } from '@lykmapipo/file';
- *
- * const { upload }= bucketUploaderFor('images');
- * upload(request, response, error => { ... });
- *
- */
-export const bucketUploaderFor = (bucket = 'fs') => {
-  // obtain bucket options
-  const { fieldName, bucketName } = bucketInfoFor(bucket);
-
-  // obtain GridFSBucket storage
-  const storage = bucketFor(bucketName);
-
-  // obtain model for the bucket
-  const File = modelFor(bucketName);
-
-  // const file filter
-  const fileFilter = fileFilterFor(bucketName);
-
-  // create multer file uploader
-  const upload = multer({ storage, fileFilter }).any();
-
-  // return multer upload handler with bucket info
-  return { fieldName, bucketName, upload, File };
-};
-
-/**
  * @function uploadErrorFor
  * @name uploadErrorFor
  * @description Derive upload validation error for a given paths.
@@ -412,10 +369,29 @@ export const uploadErrorFor = (...path) => {
   return error;
 };
 
-export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
-  // obtain bucket name
-  const { bucket = 'fs' } = request.params;
-
+/**
+ * @function bucketUploaderFor
+ * @name bucketUploaderFor
+ * @description Derive multer uploader for a given bucket name
+ * @return {Object} uploader Derived bucket uploader details
+ * @return {Model} uploader.File valid file model for the bucket
+ * @return {String} uploader.fieldName expected file field name on the request
+ * @return {Function} uploader.upload valid multer file uploader
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @private
+ * @example
+ *
+ * import { bucketUploaderFor } from '@lykmapipo/file';
+ *
+ * const { upload }= bucketUploaderFor('images');
+ * upload(request, response, error => { ... });
+ *
+ */
+export const bucketUploaderFor = (bucket = 'fs') => {
   // obtain bucket options
   const { fieldName, bucketName } = bucketInfoFor(bucket);
 
@@ -428,34 +404,80 @@ export const uploaderFor = (/* ...bucket */) => (request, response, next) => {
   // const file filter
   const fileFilter = fileFilterFor(bucketName);
 
-  // create multer uploader
+  // create multer file uploader
   const upload = multer({ storage, fileFilter }).any();
 
-  // do upload
-  upload(request, response, error => {
-    // backoff on error
-    if (error) {
-      return next(error);
-    }
+  // return multer upload handler with bucket info
+  return { fieldName, bucketName, upload, File };
+};
 
-    // extend request with file instance
-    if (request.files) {
-      // create file instance
-      const file = new File(request.files[0]);
+/**
+ * @function uploderFor
+ * @name uploderFor
+ * @description Conventional upload middleware for use with file types
+ * @return {Function} valid multer file uploader for file, image, audio, video,
+ * document field names.
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * import { post } from '@lykmapipo/express-common';
+ * import { uploderFor } from '@lykmapipo/file';
+ *
+ * post('/v1/changelogs', uploadFor(), (request, response, next) => {
+ *   console.log(request.body);
+ *   //=> { image: ..., audio: ..., video: ..., ... }
+ * });
+ *
+ */
+export const uploaderFor = () => {
+  // build file upload middleware
+  return (request, response, next) => {
+    // create buckets
+    const { files, images, audios, videos, documents } = createBuckets();
 
-      // set file to request
-      request.file = file;
+    // prepare per field storage bucket
+    const storage = files;
+    const storages = {
+      file: files,
+      image: images,
+      audio: audios,
+      video: videos,
+      document: documents,
+    };
 
-      // set file to body
-      const body = mergeObjects(request.body);
-      set(body, fieldName, file);
-      request.body = body;
+    // TODO: handle different fieldnames
+    // TODO: handle required fieldname
+    // TODO: handle array of files per fieldname
 
-      // continue
+    // create multi storage multer uploader
+    const upload = multer({ storage, storages }).any();
+
+    // handle bucket file upload
+    upload(request, response, error => {
+      // backoff on error
+      if (error) {
+        return next(error);
+      }
+
+      // ignore if no file uploaded
+      if (isEmpty(request.files)) {
+        return next();
+      }
+
+      // attach uploaded file to request body
+      request.body = !isEmpty(request.body) ? request.body : {};
+      forEach(request.files, file => {
+        const File = modelFor(file.fieldname);
+        request.body[file.fieldname] = new File(file);
+      });
+
+      // continue after upload
       return next();
-    }
-
-    // continue
-    return next();
-  });
+    });
+  };
 };

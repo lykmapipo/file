@@ -2,11 +2,21 @@ import { join as joinPath } from 'path';
 import { createReadStream } from 'fs';
 import { getType as mimeTypeOf } from 'mime';
 import { ObjectId } from '@lykmapipo/mongoose-common';
-import { expect, createTestModel } from '@lykmapipo/mongoose-test-helpers';
+import {
+  expect,
+  faker,
+  createTestModel,
+} from '@lykmapipo/mongoose-test-helpers';
+import {
+  post,
+  testUpload,
+  clear as clearHttp,
+} from '@lykmapipo/express-test-helpers';
 import actions from 'mongoose-rest-actions';
 import {
   FileTypes,
   createModels,
+  uploaderFor,
   AUTOPOPULATE_OPTIONS,
 } from '../src/file.model';
 
@@ -31,6 +41,8 @@ describe('SchemaTypes', () => {
     },
     actions
   );
+
+  before(() => clearHttp());
 
   before(done => {
     const filename = 'image.png';
@@ -159,4 +171,35 @@ describe('SchemaTypes', () => {
       done(error, found);
     });
   });
+
+  it('should set uploaded file to model file paths', done => {
+    const files = {
+      aliases: faker.random.word(),
+      attach: {
+        audio: `${__dirname}/fixtures/audio.mp3`,
+        document: `${__dirname}/fixtures/document.doc`,
+        file: `${__dirname}/fixtures/file.txt`,
+        image: `${__dirname}/fixtures/image.png`,
+        video: `${__dirname}/fixtures/video.mp4`,
+      },
+    };
+
+    post('/v1/changelogs', uploaderFor(), (request, response) => {
+      response.created(request.body);
+    });
+
+    testUpload('/v1/changelogs', files)
+      .expect('Content-Type', /json/)
+      .expect(201, (error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body.audio).to.exist;
+        expect(body.document).to.exist;
+        expect(body.file).to.exist;
+        expect(body.image).to.exist;
+        expect(body.video).to.exist;
+        done(error, body);
+      });
+  });
+
+  after(() => clearHttp());
 });
