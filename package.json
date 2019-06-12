@@ -107,7 +107,7 @@
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
     "mime": ">=2.4.4",
-    "mongoose-gridfs": ">=1.2.1",
+    "mongoose-gridfs": ">=1.2.2",
     "mongoose-rest-actions": ">=0.28.4"
   },
   "engines": {
