@@ -84,7 +84,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "generate-changelog": "^1.7.1",
     "handlebars": "^4.1.2",
-    "husky": "^2.4.0",
+    "husky": "^2.4.1",
     "is-stream": "^2.0.0",
     "lint-staged": "^8.2.0",
     "mocha": "^6.1.4",
@@ -92,7 +92,7 @@
     "npm-check-updates": "^3.1.10",
     "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
-    "rollup": "^1.14.5"
+    "rollup": "^1.15.1"
   },
   "peerDependencies": {
     "mongoose": ">=5.5.14"
