@@ -1,3 +1,13 @@
+#### 0.1.4 (2019-06-16)
+
+##### Chores
+
+* **deps:**  force latest version & audit fix ([aa3a7f82](https://github.com/lykmapipo/file/commit/aa3a7f82170d5b49906d10dc51b81de1f71a46ed))
+
+##### New Features
+
+*  expose file length on autopopulate ([5391fffa](https://github.com/lykmapipo/file/commit/5391fffa958582e7953211e9f15939c8278c2315))
+
 #### 0.1.3 (2019-06-12)
 
 ##### Chores
