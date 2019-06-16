@@ -26,7 +26,7 @@ import multer from '@lykmapipo/multer';
 import actions from 'mongoose-rest-actions';
 
 export const AUTOPOPULATE_OPTIONS = {
-  select: { filename: 1, contentType: 1, stream: 1, download: 1 },
+  select: { filename: 1, contentType: 1, stream: 1, download: 1, length: 1 },
   maxDepth: 1,
 };
 
