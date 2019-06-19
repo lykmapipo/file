@@ -70,8 +70,8 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
-    "@lykmapipo/express-test-helpers": "^0.8.3",
-    "@lykmapipo/mongoose-test-helpers": "^0.7.11",
+    "@lykmapipo/express-test-helpers": "^0.8.4",
+    "@lykmapipo/mongoose-test-helpers": "^0.7.13",
     "chai": "^4.2.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
@@ -89,7 +89,7 @@
     "lint-staged": "^8.2.1",
     "mocha": "^6.1.4",
     "mongoose": ">=5.6.0",
-    "npm-check-updates": "^3.1.10",
+    "npm-check-updates": "^3.1.11",
     "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
     "rollup": "^1.15.6"
@@ -98,17 +98,17 @@
     "mongoose": ">=5.6.0"
   },
   "dependencies": {
-    "@lykmapipo/common": ">=0.21.0",
+    "@lykmapipo/common": ">=0.22.0",
     "@lykmapipo/env": ">=0.9.1",
-    "@lykmapipo/express-common": ">=0.17.7",
+    "@lykmapipo/express-common": ">=0.17.8",
     "@lykmapipo/express-rest-actions": ">=0.6.4",
-    "@lykmapipo/mongoose-common": ">=0.25.3",
+    "@lykmapipo/mongoose-common": ">=0.25.4",
     "@lykmapipo/multer": ">=1.5.0",
     "async": ">=3.0.1",
     "lodash": ">=4.17.11",
     "mime": ">=2.4.4",
-    "mongoose-gridfs": ">=1.2.2",
-    "mongoose-rest-actions": ">=0.28.4"
+    "mongoose-gridfs": ">=1.2.3",
+    "mongoose-rest-actions": ">=0.28.5"
   },
   "engines": {
     "node": ">=8.11.1",
