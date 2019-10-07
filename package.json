@@ -78,7 +78,7 @@
     "doxdox": "^3.0.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-mocha": "^6.1.1",
     "eslint-plugin-prettier": "^3.1.1",
@@ -90,18 +90,18 @@
     "lodash.template": "^4.5.0",
     "mocha": "^6.2.1",
     "mongoose": ">=5.7.3",
-    "npm-check-updates": "^3.1.23",
+    "npm-check-updates": "^3.1.24",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
-    "rollup": "^1.22.0",
+    "rollup": "^1.23.1",
     "shelljs": "^0.8.3"
   },
   "peerDependencies": {
     "mongoose": ">=5.7.3"
   },
   "dependencies": {
-    "@lykmapipo/common": ">=0.28.1",
-    "@lykmapipo/env": ">=0.14.3",
+    "@lykmapipo/common": ">=0.28.2",
+    "@lykmapipo/env": ">=0.14.4",
     "@lykmapipo/express-common": ">=0.17.12",
     "@lykmapipo/express-rest-actions": ">=0.8.0",
     "@lykmapipo/mongoose-common": ">=0.26.0",
@@ -109,7 +109,7 @@
     "async": ">=3.1.0",
     "lodash": ">=4.17.15",
     "mime": ">=2.4.4",
-    "mongoose-gridfs": ">=1.2.9",
+    "mongoose-gridfs": ">=1.2.10",
     "mongoose-rest-actions": ">=0.29.3"
   },
   "engines": {
