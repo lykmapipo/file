@@ -1,6 +1,6 @@
 {
   "name": "@lykmapipo/file",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Store and serve file content i.e photos, videos etc on top of MongoDB GridFS",
   "main": "lib/index.js",
   "module": "es/index.js",
