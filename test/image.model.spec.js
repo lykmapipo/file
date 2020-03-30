@@ -6,14 +6,14 @@ import { readable as isReadableStream } from 'is-stream';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
 import { createModels } from '../src/file.model';
 
-const readStreamFor = filename => {
+const readStreamFor = (filename) => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
 describe('Image', () => {
   let image;
 
-  it('should write image to the bucket', done => {
+  it('should write image to the bucket', (done) => {
     const filename = 'image.png';
     const contentType = mimeTypeOf('.png');
     const options = { filename, contentType };
@@ -38,7 +38,7 @@ describe('Image', () => {
     });
   });
 
-  it('should return `Buffer` when read with callback', done => {
+  it('should return `Buffer` when read with callback', (done) => {
     const { Image } = createModels();
     const options = { _id: image._id };
 
@@ -50,7 +50,7 @@ describe('Image', () => {
     });
   });
 
-  it('should return readable stream when read with no callback', done => {
+  it('should return readable stream when read with no callback', (done) => {
     const { Image } = createModels();
     const options = { _id: image._id };
 
@@ -59,7 +59,7 @@ describe('Image', () => {
     done();
   });
 
-  it('should unlink image from the bucket', done => {
+  it('should unlink image from the bucket', (done) => {
     const { Image } = createModels();
     const options = { _id: image._id };
 

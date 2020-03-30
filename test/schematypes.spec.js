@@ -20,7 +20,7 @@ import {
   AUTOPOPULATE_OPTIONS,
 } from '../src/file.model';
 
-const readStreamFor = filename => {
+const readStreamFor = (filename) => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
@@ -44,7 +44,7 @@ describe('SchemaTypes', () => {
 
   before(() => clearHttp());
 
-  before(done => {
+  before((done) => {
     const filename = 'image.png';
     const contentType = mimeTypeOf('.png');
     const options = { filename, contentType };
@@ -58,7 +58,7 @@ describe('SchemaTypes', () => {
     });
   });
 
-  before(done => {
+  before((done) => {
     const filename = 'audio.mp3';
     const contentType = mimeTypeOf('.mp3');
     const options = { filename, contentType };
@@ -72,7 +72,7 @@ describe('SchemaTypes', () => {
     });
   });
 
-  before(done => {
+  before((done) => {
     const filename = 'video.mp4';
     const contentType = mimeTypeOf('.mp4');
     const options = { filename, contentType };
@@ -86,7 +86,7 @@ describe('SchemaTypes', () => {
     });
   });
 
-  before(done => {
+  before((done) => {
     const filename = 'document.doc';
     const contentType = mimeTypeOf('.doc');
     const options = { filename, contentType };
@@ -137,7 +137,7 @@ describe('SchemaTypes', () => {
     expect(filePath.options.autopopulate).to.be.eql(AUTOPOPULATE_OPTIONS);
   });
 
-  it('should be able to create with files', done => {
+  it('should be able to create with files', (done) => {
     changelog = ChangeLog.fake();
     changelog.set({ image, audio, video, document: doc });
 
@@ -156,7 +156,7 @@ describe('SchemaTypes', () => {
     });
   });
 
-  it('should find and populate files paths', done => {
+  it('should find and populate files paths', (done) => {
     ChangeLog.findById(changelog._id, (error, found) => {
       expect(error).to.not.exist;
       expect(found).to.exist;
@@ -172,7 +172,7 @@ describe('SchemaTypes', () => {
     });
   });
 
-  it('should set uploaded file to model file paths', done => {
+  it('should set uploaded file to model file paths', (done) => {
     const files = {
       aliases: faker.random.word(),
       attach: {

@@ -6,14 +6,14 @@ import { readable as isReadableStream } from 'is-stream';
 import { expect } from '@lykmapipo/mongoose-test-helpers';
 import { createModels } from '../src/file.model';
 
-const readStreamFor = filename => {
+const readStreamFor = (filename) => {
   return createReadStream(joinPath(__dirname, 'fixtures', filename));
 };
 
 describe('Audio', () => {
   let audio;
 
-  it('should write audio to the bucket', done => {
+  it('should write audio to the bucket', (done) => {
     const filename = 'audio.mp3';
     const contentType = mimeTypeOf('.mp3');
     const options = { filename, contentType };
@@ -38,7 +38,7 @@ describe('Audio', () => {
     });
   });
 
-  it('should return `Buffer` when read with callback', done => {
+  it('should return `Buffer` when read with callback', (done) => {
     const { Audio } = createModels();
     const options = { _id: audio._id };
 
@@ -50,7 +50,7 @@ describe('Audio', () => {
     });
   });
 
-  it('should return readable stream when read with no callback', done => {
+  it('should return readable stream when read with no callback', (done) => {
     const { Audio } = createModels();
     const options = { _id: audio._id };
 
@@ -59,7 +59,7 @@ describe('Audio', () => {
     done();
   });
 
-  it('should unlink audio from the bucket', done => {
+  it('should unlink audio from the bucket', (done) => {
     const { Audio } = createModels();
     const options = { _id: audio._id };
 

@@ -36,11 +36,11 @@ const options = {
 
 describe('Image HTTP API', () => {
   before(() => clearHttp());
-  before(done => clearDatabase(done));
+  before((done) => clearDatabase(done));
 
   let file;
 
-  it('should handle HTTP POST on /files/:bucket', done => {
+  it('should handle HTTP POST on /files/:bucket', (done) => {
     const upload = {
       bucket: 'images',
       aliases: faker.random.word(),
@@ -66,7 +66,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should throw when HTTP POST on /files/:bucket with no file', done => {
+  it('should throw when HTTP POST on /files/:bucket with no file', (done) => {
     const upload = {
       bucket: 'images',
       aliases: faker.random.word(),
@@ -92,7 +92,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP GET on /files/:bucket', done => {
+  it('should handle HTTP GET on /files/:bucket', (done) => {
     const { testGet } = testRouter(options, fileRouter);
     const params = { bucket: 'images' };
     testGet(params)
@@ -118,7 +118,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP GET on /files/:bucket/schema', done => {
+  it('should handle HTTP GET on /files/:bucket/schema', (done) => {
     const { testGetSchema } = testRouter(options, fileRouter);
     testGetSchema({ bucket: 'images' }).expect(200, (error, { body }) => {
       expect(error).to.not.exist;
@@ -129,7 +129,7 @@ describe('Image HTTP API', () => {
     });
   });
 
-  it('should handle HTTP GET on /files/:bucket/:id', done => {
+  it('should handle HTTP GET on /files/:bucket/:id', (done) => {
     const { testGet } = testRouter(options, fileRouter);
     const params = { bucket: 'images', id: file._id };
     testGet(params)
@@ -148,7 +148,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP GET on /files/:bucket/:id/chunks', done => {
+  it('should handle HTTP GET on /files/:bucket/:id/chunks', (done) => {
     const { testStream } = testRouter(options, fileRouter);
     const params = { bucket: 'images', id: file._id };
     testStream(params)
@@ -160,7 +160,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP GET on /files/:bucket/:id/download', done => {
+  it('should handle HTTP GET on /files/:bucket/:id/download', (done) => {
     const { testDownload } = testRouter(options, fileRouter);
     const params = { bucket: 'images', id: file._id };
     testDownload(params)
@@ -173,7 +173,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP PATCH on /files/:bucket/:id', done => {
+  it('should handle HTTP PATCH on /files/:bucket/:id', (done) => {
     const { testPatch } = testRouter(options, fileRouter);
     const updates = { metadata: { owner: faker.name.findName() } };
     const params = { bucket: 'images', id: file._id };
@@ -195,7 +195,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP PUT on /files/:bucket/:id', done => {
+  it('should handle HTTP PUT on /files/:bucket/:id', (done) => {
     const { testPut } = testRouter(options, fileRouter);
     const updates = { metadata: { owner: faker.name.findName() } };
     const params = { bucket: 'images', id: file._id };
@@ -217,7 +217,7 @@ describe('Image HTTP API', () => {
       });
   });
 
-  it('should handle HTTP DELETE on /files/:bucket/:id', done => {
+  it('should handle HTTP DELETE on /files/:bucket/:id', (done) => {
     const { testDelete } = testRouter(options, fileRouter);
     const params = { bucket: 'images', id: file._id };
     testDelete(params)
@@ -237,5 +237,5 @@ describe('Image HTTP API', () => {
   });
 
   after(() => clearHttp());
-  after(done => clearDatabase(done));
+  after((done) => clearDatabase(done));
 });

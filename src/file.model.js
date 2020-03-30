@@ -192,7 +192,7 @@ export const createBuckets = () => {
  */
 export const createModels = () => {
   // schema plugin for file stream and download urls
-  const urlsFor = bucketInfo => schema => {
+  const urlsFor = (bucketInfo) => (schema) => {
     // obtain bucket name
     const { bucketName } = bucketInfo;
 
@@ -354,7 +354,7 @@ export const fileFilterFor = (bucket = 'fs') => {
 export const uploadErrorFor = (...path) => {
   // prepare required paths validator options
   const paths = {};
-  forEach(uniq([...path]), pathName => {
+  forEach(uniq([...path]), (pathName) => {
     paths[pathName] = {
       type: 'required',
       path: pathName,
@@ -458,7 +458,7 @@ export const uploaderFor = () => {
     const upload = multer({ storage, storages }).any();
 
     // handle bucket file upload
-    upload(request, response, error => {
+    upload(request, response, (error) => {
       // backoff on error
       if (error) {
         return next(error);
@@ -471,7 +471,7 @@ export const uploaderFor = () => {
 
       // attach uploaded file to request body
       request.body = !isEmpty(request.body) ? request.body : {};
-      forEach(request.files, file => {
+      forEach(request.files, (file) => {
         const File = modelFor(file.fieldname);
         request.body[file.fieldname] = new File(file);
       });

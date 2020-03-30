@@ -195,7 +195,7 @@ router.post(PATH_LIST, (request, response, next) => {
   const { upload, fieldName, File } = bucketUploaderFor(bucket);
 
   // handle bucket file upload
-  upload(request, response, error => {
+  upload(request, response, (error) => {
     // backoff on error
     if (error) {
       return next(error);

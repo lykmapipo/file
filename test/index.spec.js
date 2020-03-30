@@ -259,7 +259,7 @@ describe('Index', () => {
     expect(documents.collectionName).to.be.equal('documents.files');
   });
 
-  it('should filter allowed file for a default bucket', done => {
+  it('should filter allowed file for a default bucket', (done) => {
     const fileFilter = fileFilterFor();
     fileFilter({}, { fieldname: 'file' }, (error, isAllowed) => {
       expect(error).to.not.exist;
@@ -268,7 +268,7 @@ describe('Index', () => {
     });
   });
 
-  it('should filter reject file for a default bucket', done => {
+  it('should filter reject file for a default bucket', (done) => {
     const fileFilter = fileFilterFor();
     fileFilter({}, { fieldname: 'any' }, (error, isAllowed) => {
       expect(error).to.not.exist;
@@ -277,7 +277,7 @@ describe('Index', () => {
     });
   });
 
-  it('should filter allowed file for a specified bucket', done => {
+  it('should filter allowed file for a specified bucket', (done) => {
     const fileFilter = fileFilterFor('images');
     fileFilter({}, { fieldname: 'image' }, (error, isAllowed) => {
       expect(error).to.not.exist;
@@ -286,7 +286,7 @@ describe('Index', () => {
     });
   });
 
-  it('should filter reject file for a specified bucket', done => {
+  it('should filter reject file for a specified bucket', (done) => {
     const fileFilter = fileFilterFor('images');
     fileFilter({}, { fieldname: 'any' }, (error, isAllowed) => {
       expect(error).to.not.exist;
